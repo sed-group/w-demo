@@ -5,138 +5,164 @@
       wrap
     >
       <v-flex xs12>
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        ></v-img>
-      </v-flex>
-
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank">Discord Community</a>
-        </p>
-      </v-flex>
-
-      <v-flex
-        mb-5
-        xs12
-      >
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
+        <v-card flat>
+          <v-tabs
+            v-model="tab"
+            background-color="blue-grey"
+            show-arrows
+            dark
+            centered
+            icons-and-text
           >
-            {{ next.text }}
-          </a>
-        </v-layout>
-      </v-flex>
+            <v-tabs-slider></v-tabs-slider>
 
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
+            <v-tab href="#tab-1">
+              Configure
+              <v-icon>mdi-tune</v-icon>
+            </v-tab>
 
-        <v-layout justify-center>
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-layout>
-      </v-flex>
+            <v-tab href="#tab-2">
+              Model
+              <v-icon>mdi-ufo</v-icon>
+            </v-tab>
 
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Ecosystem</h2>
+            <v-tab href="#tab-3">
+              Analysis
+              <v-icon>mdi-flask</v-icon>
+            </v-tab>
+          </v-tabs>
 
-        <v-layout justify-center>
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-layout>
+          <v-tabs-items v-model="tab">
+            <v-tab-item
+              value="tab-1"
+            >
+              <v-card flat>
+                <v-card-text class="pt-0">
+                  <v-subheader>Cards</v-subheader>
+                  <v-btn-toggle
+                    v-model="toggle_card"
+                    mandatory
+                  >
+                    <v-btn>
+                      <v-icon>mdi-cards-heart</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-diamond</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-club</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-spade</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+
+                  <v-subheader>Cars</v-subheader>
+                  <v-btn-toggle
+                    v-model="toggle_car"
+                    mandatory
+                  >
+                    <v-btn>
+                      <v-icon>mdi-car-sports</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-convertible</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-side</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-hatchback</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-pickup</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-estate</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+                  
+                  <v-subheader>Cards</v-subheader>
+                  <v-btn-toggle
+                    v-model="toggle_card"
+                    mandatory
+                  >
+                    <v-btn>
+                      <v-icon>mdi-cards-heart</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-diamond</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-club</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-cards-spade</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+
+                  <v-subheader>Cars</v-subheader>
+                  <v-btn-toggle
+                    v-model="toggle_car"
+                    mandatory
+                  >
+                    <v-btn>
+                      <v-icon>mdi-car-sports</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-convertible</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-side</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-hatchback</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-pickup</v-icon>
+                    </v-btn>
+                    <v-btn>
+                      <v-icon>mdi-car-estate</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item
+              value="tab-2"
+            >
+              <v-card flat>
+                <v-card-text>2</v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item
+              value="tab-3"
+            >
+              <v-card flat>
+                <v-card-text>3</v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card>
+        
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-export default {
-  data: () => ({
-    ecosystem: [
-      {
-        text: 'vuetify-loader',
-        href: 'https://github.com/vuetifyjs/vuetify-loader',
-      },
-      {
-        text: 'github',
-        href: 'https://github.com/vuetifyjs/vuetify',
-      },
-      {
-        text: 'awesome-vuetify',
-        href: 'https://github.com/vuetifyjs/awesome-vuetify',
-      },
-    ],
-    importantLinks: [
-      {
-        text: 'Documentation',
-        href: 'https://vuetifyjs.com',
-      },
-      {
-        text: 'Chat',
-        href: 'https://community.vuetifyjs.com',
-      },
-      {
-        text: 'Made with Vuetify',
-        href: 'https://madewithvuejs.com/vuetify',
-      },
-      {
-        text: 'Twitter',
-        href: 'https://twitter.com/vuetifyjs',
-      },
-      {
-        text: 'Articles',
-        href: 'https://medium.com/vuetify',
-      },
-    ],
-    whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com/components/api-explorer',
-      },
-      {
-        text: 'Select a layout',
-        href: 'https://vuetifyjs.com/layout/pre-defined',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
-  }),
-};
+  export default {
+    data () {
+      return {
+        toggle_card: undefined,
+        toggle_car: undefined,
+        value: 30,
+        rules: [
+          v => v <= 40 || 'Only 40 in stock',
+        ],
+        tab: null,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      }
+    },
+  }
 </script>
