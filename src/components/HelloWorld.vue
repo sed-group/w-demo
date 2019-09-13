@@ -1,12 +1,11 @@
 <template>
-  <v-container>
+  <v-container pa-0>
     <v-layout
       text-center
       wrap
     >
       <v-flex xs12>
 
-        <v-card flat>
 
           <v-toolbar
             color="blue-grey"
@@ -203,12 +202,18 @@
             >
               <v-card flat>
                 <v-card-text>
-                  <RandomChart/>
+                  <RandomChart
+                    v-bind:toggle_saddle="toggle_saddle"
+                    v-bind:toggle_drivetrain="toggle_drivetrain"
+                    v-bind:toggle_brakes="toggle_brakes"
+                    v-bind:toggle_handlebars="toggle_handlebars"
+                    v-bind:toggle_wheels="toggle_wheels"
+                    v-bind:toggle_frame="toggle_frame"
+                  ></RandomChart>
                 </v-card-text>
               </v-card>
             </v-tab-item>
           </v-tabs-items>
-        </v-card>
         
       </v-flex>
     </v-layout>
