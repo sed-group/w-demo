@@ -46,6 +46,11 @@
                   Analysis
                   <v-icon>mdi-flask</v-icon>
                 </v-tab>
+
+                <v-tab href="#tab-4">
+                  Test
+                  <v-icon>mdi-gamepad-square</v-icon>
+                </v-tab>
               </v-tabs>
             </template>
           </v-toolbar>
@@ -213,6 +218,19 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
+            <v-tab-item
+              value="tab-4"
+            >
+              <v-card flat>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <OtherChart></OtherChart>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
           </v-tabs-items>
         
       </v-flex>
@@ -222,10 +240,12 @@
 
 <script>
 import RandomChart from './RandomChart';
+import OtherChart from './OtherChart';
 
   export default {
     components: {
       RandomChart,
+      OtherChart,
     },
     data () {
       return {
