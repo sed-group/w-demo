@@ -14,13 +14,13 @@
             app
           >
             <v-toolbar-title class="headline text-uppercase">
-              <span>SED</span>
-              <span class="font-weight-light">DEMO tests</span>
+              <span>SE</span>
+              <span class="font-weight-light">DESIGN</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <span class="overline blue-grey--text text--lighten-3">
-              user-id
-            </span>
+            <span class="overline" v-text="roles[role].text"></span>
+            <v-spacer></v-spacer>
+            <img src="@/assets/WingquistWhite.png" alt="Wingquist Laboratory" width="110" height="26">
           </v-app-bar>
 
           <v-card
@@ -30,19 +30,7 @@
           >
             <v-card-title>Select your role</v-card-title>
             <v-card-text>
-<!--               <v-btn color="error" fab x-large dark>
-                👨‍🏭
-              </v-btn>
-              <v-btn color="primary" fab x-large dark>
-                👩‍💻
-              </v-btn>
-              <v-btn color="success" fab x-large dark>
-                👩‍🚀
-              </v-btn>
-              <v-btn color="warning" fab x-large dark>
-                👩‍🔧
-              </v-btn> -->
-
+              <p class="text-left">Select the role you want to play in this product development demonstration:</p>
               <v-list rounded>
                 <v-list-item-group 
                   v-model="role" 
@@ -52,7 +40,7 @@
                   <v-list-item
                     v-for="(role, i) in roles"
                     :key="i"
-                    :color="role.color"
+                    :color="roles[i].color"
                   >
                     <v-list-item-content>
                       <v-list-item-title v-text="role.text"></v-list-item-title>
@@ -71,8 +59,9 @@
             class="mx-auto my-3"
             v-if="activeBtn==1"
           >
-            <v-card-title>Prioritize these attributes</v-card-title>
+            <v-card-title>What are your priorities?</v-card-title>
             <v-card-text>
+              <p class="text-left">Drag and drop the following attributes to rank them so the ones you value the most in your role as <span :style="{color:roles[role].color}">{{ roles[role].text.toLowerCase() }}</span> are at the top:</p>
               <v-list flat>
                 
                 <v-list-item-group v-model="attribute" color="blue-grey">
@@ -103,7 +92,29 @@
             class="mx-auto my-3"
             v-if="activeBtn==2"
           >
+            <v-card-title>Design the product</v-card-title>
             <v-card-text class="pt-0">
+              <div class="text-left">Configure the product, paying attention to how the different alternatives affect the overall weight and cost:</div>
+              <v-row>
+                <v-col>
+                  <span>Weight</span>
+                  <v-progress-linear
+                    color="cyan"
+                    height="10"
+                    :value="weight"
+                    striped
+                  ></v-progress-linear>
+                </v-col>
+                <v-col>
+                  <span>Cost</span>
+                  <v-progress-linear
+                    color="teal"
+                    height="10"
+                    :value="cost"
+                    striped
+                  ></v-progress-linear>
+                </v-col>
+              </v-row>
               <v-subheader>Saddle</v-subheader>
               <v-btn-toggle
                 v-model="toggle_saddle"
@@ -146,13 +157,13 @@
                 mandatory
               >
                 <v-btn>
+                  Drum
+                </v-btn>
+                <v-btn>
                   Rim
                 </v-btn>
                 <v-btn>
                   Disc
-                </v-btn>
-                <v-btn>
-                  Drum
                 </v-btn>
               </v-btn-toggle>
               <v-subheader>Handlebars</v-subheader>
@@ -212,8 +223,65 @@
             class="mx-auto my-3"
             v-if="activeBtn==3"
           >
+            <v-card-title>Analysis results</v-card-title>
             <v-card-text>
+              <p class="text-left">The overall value of your design regarding your expressed priorities for your role as <span :style="{color:roles[role].color}">{{ roles[role].text.toLowerCase() }}</span> is represented in the following figure:</p>
               <!-- <OtherChart></OtherChart> -->
+              <div class="text-center">
+                <v-progress-circular
+                  :rotate="-90"
+                  :size="100"
+                  :width="15"
+                  :value="valueTotal"
+                  color="light-blue"
+                >
+                  {{ valueTotal }}
+                </v-progress-circular>
+              </div>
+              <br>
+              <v-expansion-panels>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Peek under the model...</v-expansion-panel-header>
+        <v-expansion-panel-content>
+              <span>Sale Price</span>
+              <v-progress-linear
+                color="red"
+                height="10"
+                :value="valueSalePrice"
+                striped
+              ></v-progress-linear>
+              <br>
+              <span>Performance</span>
+              <v-progress-linear
+                color="indigo"
+                height="10"
+                :value="valuePerformance"
+                striped
+              ></v-progress-linear>
+              <br>
+              <span>Reliability</span>
+              <v-progress-linear
+                color="lime"
+                height="10"
+                :value="valueReliability"
+                striped
+              ></v-progress-linear>
+              <br>
+              <span>Maintainability</span>
+              <v-progress-linear
+                color="orange"
+                height="10"
+                :value="valueMaintainability"
+                striped
+              ></v-progress-linear>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      </v-expansion-panels>
+              <br>
+              <p class="text-left">Good enough? Submit it!</p>
+              <div class="text-center">
+                <v-btn rounded :color="roles[role].color" outlined dark large>Submit</v-btn>
+              </div>
             </v-card-text>
           </v-card>
 
@@ -252,12 +320,53 @@
 
 <script>
 import draggable from 'vuedraggable'
-import OtherChart from './OtherChart'
+//import OtherChart from './OtherChart'
 
   export default {
     components: {
       draggable,
-      OtherChart,
+      //OtherChart,
+    },
+    computed: {
+      weight: function () {
+        return Math.floor(50 + (- this.toggle_saddle + this.toggle_drivetrain - this.toggle_brakes + this.toggle_handlebars + this.toggle_wheels - this.toggle_frame) * 50 / 9)
+      },
+      cost: function () {
+        return Math.floor(50 + (this.toggle_saddle + this.toggle_drivetrain + this.toggle_brakes + this.toggle_handlebars + this.toggle_wheels + this.toggle_frame) * 50 / 15)
+      },
+      valueSalePrice: function () {
+        return this.cost
+      },
+      valuePerformance: function () {
+        var saddlePerformance = - this.toggle_saddle * 6
+        var drivetrainPerformance = this.toggle_drivetrain * 3
+        var brakesPerformance = this.toggle_brakes * 8
+        var handlebarsPerformance = this.toggle_handlebars * 10
+        var wheelsPerformance = this.toggle_wheels * 4
+        var framePerformance = this.toggle_frame * 10
+        return 32 + saddlePerformance + drivetrainPerformance + brakesPerformance + handlebarsPerformance + wheelsPerformance + framePerformance
+      },
+      valueReliability: function () {
+        var saddleReliability = 10
+        var drivetrainReliability = - this.toggle_drivetrain * 10
+        var brakesReliability = this.toggle_brakes * 8
+        var handlebarsReliability = - this.toggle_handlebars
+        var wheelsReliability = - this.toggle_wheels * 2
+        var frameReliability = - this.toggle_frame * 10
+        return 74 + saddleReliability + drivetrainReliability + brakesReliability + handlebarsReliability + wheelsReliability + frameReliability
+      },
+      valueMaintainability: function () {
+        var saddleMaintainability = this.toggle_saddle * 5
+        var drivetrainMaintainability = - this.toggle_drivetrain * 5
+        var brakesMaintainability = this.toggle_brakes * 7
+        var handlebarsMaintainability = - this.toggle_handlebars * 7
+        var wheelsMaintainability = this.toggle_wheels * 5
+        var frameMaintainability = - this.toggle_frame * 15
+        return 61 + saddleMaintainability + drivetrainMaintainability + brakesMaintainability + handlebarsMaintainability + wheelsMaintainability + frameMaintainability
+      },
+      valueTotal: function () {
+        return Math.floor((100 - this.valueSalePrice + this.valuePerformance + this.valueReliability + this.valueMaintainability) / 4)
+      },
     },
     data () {
       return {
@@ -265,24 +374,23 @@ import OtherChart from './OtherChart'
         role: 0,
         roles: [
           { text: 'User', icon: '👩‍🚀', color: 'red' },
-          { text: 'Design', icon: '👩‍💻', color: 'blue' },
-          { text: 'Production', icon: '👨‍🏭', color: 'green' },
-          { text: 'Maintenance', icon: '👩‍🔧', color: 'amber' },
+          { text: 'Designer', icon: '👩‍💻', color: 'blue' },
+          { text: 'Production engineer', icon: '👨‍🏭', color: 'green' },
+          { text: 'Maintenance engineer', icon: '👩‍🔧', color: '#FFC107' },
         ],
         attribute: null,
         attributes: [
-          { text: 'Low cost', icon: '💰', order: '1' },
+          { text: 'Low sale price', icon: '💰', order: '1' },
           { text: 'High performance', icon: '🏅', order: '2' },
           { text: 'High reliability', icon: '🐢', order: '3' },
           { text: 'High maintainability', icon: '🛠️', order: '4' },
         ],
-        valueA: undefined,
-        toggle_saddle: undefined,
-        toggle_drivetrain: undefined,
-        toggle_brakes: undefined,
-        toggle_handlebars: undefined,
-        toggle_wheels: undefined,
-        toggle_frame: undefined,
+        toggle_saddle: 0,
+        toggle_drivetrain: 0,
+        toggle_brakes: 0,
+        toggle_handlebars: 0,
+        toggle_wheels: 0,
+        toggle_frame: 0,
       }
     },
     methods: {
