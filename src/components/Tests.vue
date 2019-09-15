@@ -8,7 +8,7 @@
 
 
           <v-app-bar
-            color="blue-grey"
+            :color="roles[role].color"
             dark
             flat
             app
@@ -44,17 +44,22 @@
               </v-btn> -->
 
               <v-list rounded>
-                <v-list-item-group v-model="role" color="blue-grey">
+                <v-list-item-group 
+                  v-model="role" 
+                  color="blue-grey"
+                  mandatory
+                >
                   <v-list-item
                     v-for="(role, i) in roles"
                     :key="i"
+                    :color="role.color"
                   >
-                    <v-list-item-icon>
-                      <span v-text="role.icon"></span>
-                    </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title v-text="role.text"></v-list-item-title>
                     </v-list-item-content>
+                    <v-list-item-icon>
+                      <span v-text="role.icon"></span>
+                    </v-list-item-icon>
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
@@ -68,7 +73,7 @@
           >
             <v-card-title>Prioritize these attributes</v-card-title>
             <v-card-text>
-              <v-list rounded>
+              <v-list flat>
                 
                 <v-list-item-group v-model="attribute" color="blue-grey">
                   <draggable v-model="attributes" group="attributes" @end="updateAttributeOrder">
@@ -208,7 +213,7 @@
             v-if="activeBtn==3"
           >
             <v-card-text>
-              <OtherChart></OtherChart>
+              <!-- <OtherChart></OtherChart> -->
             </v-card-text>
           </v-card>
 
@@ -216,7 +221,7 @@
     </v-layout>
     <v-bottom-navigation
       v-model="activeBtn"
-      color="blue-grey"
+      :color="roles[role].color"
       fixed
       app
       shift
@@ -237,7 +242,7 @@
       </v-btn>
 
       <v-btn>
-        <span>Results</span>
+        <span>Analysis</span>
         <v-icon>mdi-chart-bar</v-icon>
       </v-btn>
 
@@ -259,10 +264,10 @@ import OtherChart from './OtherChart'
         activeBtn: 0,
         role: 0,
         roles: [
-          { text: 'User', icon: '👩‍🚀' },
-          { text: 'Production', icon: '👨‍🏭' },
-          { text: 'Design', icon: '👩‍💻' },
-          { text: 'Maintenance', icon: '👩‍🔧' },
+          { text: 'User', icon: '👩‍🚀', color: 'red' },
+          { text: 'Design', icon: '👩‍💻', color: 'blue' },
+          { text: 'Production', icon: '👨‍🏭', color: 'green' },
+          { text: 'Maintenance', icon: '👩‍🔧', color: 'amber' },
         ],
         attribute: null,
         attributes: [
