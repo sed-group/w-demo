@@ -315,12 +315,33 @@
       </v-btn>
 
     </v-bottom-navigation>
+    <div class="text-center">
+      <v-overlay :value="overlay">
+        <v-progress-circular
+          v-if="uploading"
+          :size="70"
+          :width="7"
+          color="blue-grey"
+          indeterminate
+        ></v-progress-circular>
+        <span v-if="!uploading">Design uploaded!</span>
+        <br>
+        <v-btn
+          icon
+          @click="overlay = false"
+          v-if="!uploading"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-overlay>
+    </div>
   </v-container>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 //import OtherChart from './OtherChart'
+import { db } from '@/main'
 
   export default {
     components: {
@@ -382,6 +403,8 @@ import draggable from 'vuedraggable'
     },
     data () {
       return {
+        uploading: false,
+        overlay: false,
         activeBtn: 0,
         role: 0,
         roles: [
@@ -423,7 +446,16 @@ import draggable from 'vuedraggable'
           reliability: this.valueReliability,
           maintainability: this.valueMaintainability,
         }
-        console.log(design)
+        this.overlay = !this.overlay
+        this.uploading = true
+        db.collection('designs').add(design).then((response) => {
+          if (response) {
+            console.log(response)
+            this.uploading = false
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
       },
       updateAttributeOrder: function() {
         var attributes = this.attributes.map(function(attribute, index) {
