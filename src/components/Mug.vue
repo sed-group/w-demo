@@ -493,18 +493,11 @@
 import draggable from 'vuedraggable'
 //import OtherChart from './OtherChart'
 import { db } from '@/main'
-import { Entity, Scene, Box, Cylinder, Property } from 'vue-babylonjs';
 
   export default {
-    mixins: [],
     components: {
       draggable,
       //OtherChart,
-      Scene,
-      Box,
-      Cylinder,
-      Entity,
-      Property,
     },
     computed: {
       cx() { return (this.cardWidth / 2); },
