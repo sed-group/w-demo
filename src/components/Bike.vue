@@ -51,21 +51,6 @@
                   </v-list-item>
                 </v-list-item-group>
               </v-list>
-              <Scene>
-                <Camera></Camera>
-                <HemisphericLight diffuse="#0000FF"></HemisphericLight>
-                <Entity :position="[0, 0, 5]">
-                  <Animation property="rotation.x" :duration="5" :end="Math.PI * 2"></Animation>
-                  <Animation property="rotation.y" :duration="5" :end="Math.PI * 2"></Animation>
-                  <Animation property="rotation.z" :duration="5" :end="Math.PI * 2"></Animation>
-                  <PointLight diffuse="#FF0000"></PointLight>
-                  <template v-for="x in [0, 4, -4]">
-                    <template v-for="y in [0, 4, -4]">
-                      <Box v-for="z in [0, 4, -4]" :position="[x, y, z]" :key="`${x},${y},${z}`"></Box>
-                    </template>
-                  </template>
-                </Entity>
-              </Scene>
             </v-card-text>
           </v-card>
 
@@ -357,15 +342,12 @@
 import draggable from 'vuedraggable'
 //import OtherChart from './OtherChart'
 import { db } from '@/main'
-import { Entity, Scene, Box } from 'vue-babylonjs';
 
   export default {
-    mixins: [Entity],
+    mixins: [],
     components: {
       draggable,
       //OtherChart,
-      Scene,
-      Box,
     },
     computed: {
       weight: function () {
