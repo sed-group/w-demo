@@ -239,49 +239,49 @@
                 </v-progress-circular>
               </div>
               <br>
-              <v-expansion-panels>
-      <v-expansion-panel>
-        <v-expansion-panel-header>Peek under the model...</v-expansion-panel-header>
-        <v-expansion-panel-content>
-              <span>Sale Price</span>
-              <v-progress-linear
-                color="red"
-                height="10"
-                :value="valueSalePrice"
-                striped
-              ></v-progress-linear>
-              <br>
-              <span>Performance</span>
-              <v-progress-linear
-                color="indigo"
-                height="10"
-                :value="valuePerformance"
-                striped
-              ></v-progress-linear>
-              <br>
-              <span>Reliability</span>
-              <v-progress-linear
-                color="lime"
-                height="10"
-                :value="valueReliability"
-                striped
-              ></v-progress-linear>
-              <br>
-              <span>Maintainability</span>
-              <v-progress-linear
-                color="orange"
-                height="10"
-                :value="valueMaintainability"
-                striped
-              ></v-progress-linear>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      </v-expansion-panels>
-              <br>
               <p class="text-left">Good enough? Submit it!</p>
               <div class="text-center">
-                <v-btn rounded :color="roles[role].color" outlined dark large>Submit</v-btn>
+                <v-btn @click="submitDesign" rounded :color="roles[role].color" outlined dark large>Submit</v-btn>
               </div>
+              <br>
+              <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>Peek under the model...</v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                        <span>Sale Price</span>
+                        <v-progress-linear
+                          color="red"
+                          height="10"
+                          :value="valueSalePrice"
+                          striped
+                        ></v-progress-linear>
+                        <br>
+                        <span>Performance</span>
+                        <v-progress-linear
+                          color="indigo"
+                          height="10"
+                          :value="valuePerformance"
+                          striped
+                        ></v-progress-linear>
+                        <br>
+                        <span>Reliability</span>
+                        <v-progress-linear
+                          color="lime"
+                          height="10"
+                          :value="valueReliability"
+                          striped
+                        ></v-progress-linear>
+                        <br>
+                        <span>Maintainability</span>
+                        <v-progress-linear
+                          color="orange"
+                          height="10"
+                          :value="valueMaintainability"
+                          striped
+                        ></v-progress-linear>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </v-card-text>
           </v-card>
 
@@ -365,7 +365,19 @@ import draggable from 'vuedraggable'
         return 61 + saddleMaintainability + drivetrainMaintainability + brakesMaintainability + handlebarsMaintainability + wheelsMaintainability + frameMaintainability
       },
       valueTotal: function () {
-        return Math.floor((100 - this.valueSalePrice + this.valuePerformance + this.valueReliability + this.valueMaintainability) / 4)
+        var priceValue = (5 - this.attributes.filter(obj => {
+          return obj.text === "Low sale price"
+        })[0].order) / 10 * this.valueSalePrice
+        var performanceValue = (5 - this.attributes.filter(obj => {
+          return obj.text === "High performance"
+        })[0].order) / 10 * this.valuePerformance
+        var reliabilityValue = (5 - this.attributes.filter(obj => {
+          return obj.text === "High reliability"
+        })[0].order) / 10 * this.valueReliability
+        var maintainabilityValue = (5 - this.attributes.filter(obj => {
+          return obj.text === "High maintainability"
+        })[0].order) / 10 * this.valueMaintainability
+        return Math.floor((100 - priceValue + performanceValue + reliabilityValue + maintainabilityValue) / 1.5)
       },
     },
     data () {
@@ -394,13 +406,31 @@ import draggable from 'vuedraggable'
       }
     },
     methods: {
-        updateAttributeOrder: function() {
-            var attributes = this.attributes.map(function(attribute, index) {
-                return { text: attribute.text, icon: attribute.icon, order: index+1 }
-            })
-
-            this.attributes = attributes
+      submitDesign: function() {
+        var design = {
+          role: this.role,
+          priorities: this.attributes,
+          saddle: this.toggle_saddle,
+          drivetrain: this.toggle_drivetrain,
+          brakes: this.toggle_brakes,
+          handlebars: this.toggle_handlebars,
+          wheels: this.toggle_wheels,
+          frame: this.toggle_frame,
+          cost: this.cost,
+          weight: this.weight,
+          price: this.valueSalePrice,
+          performance: this.valuePerformance,
+          reliability: this.valueReliability,
+          maintainability: this.valueMaintainability,
         }
+        console.log(design)
+      },
+      updateAttributeOrder: function() {
+        var attributes = this.attributes.map(function(attribute, index) {
+          return { text: attribute.text, icon: attribute.icon, order: index+1 }
+        })
+        this.attributes = attributes
+      }
     }
   }
 </script>
