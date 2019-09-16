@@ -451,11 +451,11 @@ import { db } from '@/main'
         this.uploading = true
         db.collection('designs').add(design).then((response) => {
           if (response) {
-            console.log(response)
+            //console.log(response)
             this.uploading = false
           }
         }).catch((error) => {
-          console.log(error)
+          //console.log(error)
         })
       },
       updateAttributeOrder: function() {
