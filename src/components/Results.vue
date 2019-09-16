@@ -47,7 +47,7 @@
                     <td>{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
                     <td>
                       <ol id="example-1">
-                        <li v-for="priority in item.priorities">
+                        <li :v-for="priority in item.priorities">
                           {{ priority.text }}
                         </li>
                       </ol>

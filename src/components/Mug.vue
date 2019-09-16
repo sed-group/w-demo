@@ -514,10 +514,11 @@ import { db } from '@/main'
         return style
       },
       handle() {
+        var x
         if (this.diameterTop < this.diameterBottom) {
-          var x = (this.cx + this.diameterTop/2).toString()
+          x = (this.cx + this.diameterTop/2).toString()
         } else {
-          var x = (this.cx + this.diameterBottom/2).toString()
+          x = (this.cx + this.diameterBottom/2).toString()
         }
         var i = ((this.height - 40)/2).toString()
         var h = (100 + this.height - 40).toString()
@@ -619,6 +620,7 @@ import { db } from '@/main'
         toggle_handlebars: 0,
         toggle_wheels: 0,
         toggle_frame: 0,
+        error: null,
       }
     },
     methods: {
@@ -643,11 +645,12 @@ import { db } from '@/main'
         this.uploading = true
         db.collection('designs').add(design).then((response) => {
           if (response) {
-            console.log(response)
+            //console.log(response)
             this.uploading = false
           }
         }).catch((error) => {
-          console.log(error)
+          //console.log(error)
+          this.error = error
         })
       },
       updateAttributeOrder: function() {

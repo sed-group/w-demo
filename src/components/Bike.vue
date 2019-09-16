@@ -427,6 +427,7 @@ import { db } from '@/main'
         toggle_handlebars: 0,
         toggle_wheels: 0,
         toggle_frame: 0,
+        error: null,
       }
     },
     methods: {
@@ -456,6 +457,7 @@ import { db } from '@/main'
           }
         }).catch((error) => {
           //console.log(error)
+          this.error = error
         })
       },
       updateAttributeOrder: function() {
