@@ -491,6 +491,28 @@
                         </v-icon>
                       </template>
                     </v-slider>
+                    <v-combobox
+                      v-model="select"
+                      :items="mugMaterials"
+                      chips
+                      label="Material"
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip
+                          :key="JSON.stringify(data.item)"
+                          v-bind="data.attrs"
+                          :input-value="data.selected"
+                          :disabled="data.disabled"
+                          @click.stop="data.parent.selectedIndex = data.index"
+                          @click:close="data.parent.selectItem(data.item)"
+                        >
+                          <v-avatar class="accent white--text" left>
+                            {{ data.item.slice(0, 1).toUpperCase() }}
+                          </v-avatar>
+                          {{ data.item }}
+                        </v-chip>
+                      </template>
+                    </v-combobox>
                   </v-col>
                 </v-row>
               </v-container>
@@ -655,6 +677,13 @@ import { db } from '@/main'
     },
     data () {
       return {
+        mugMaterials: [
+          'Ceramic',
+          'Steel',
+          'Aluminum',
+          'Plastic',
+          'Bamboo',
+        ],
         cardWidth: 312,
         height: 100,
         diameterTop: 100,
