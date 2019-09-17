@@ -341,99 +341,156 @@
                 />
                 Sorry, your browser does not support inline SVG.  
               </svg>
-            </v-card-text>
-          </v-card>
-
-          <v-card
-            max-width="344"
-            class="mx-auto my-3"
-            v-if="activeBtn==4"
-          >
-            <v-card-text>
               <v-container fluid>
                 <v-row>
                   <v-col cols="12">
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Height</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="height"
-                          thumb-label
-                          min="40"
-                          max="200"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Diameter Top</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="diameterTop"
-                          thumb-label
-                          min="40"
-                          max="160"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Diameter Bottom</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="diameterBottom"
-                          thumb-label
-                          min="40"
-                          max="160"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Mug Thickness</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="mugThickness"
-                          thumb-label
-                          min="1"
-                          max="10"
-                          step="0.5"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Handle Thickness</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="handleThickness"
-                          thumb-label
-                          min="1"
-                          max="30"
-                          step="1"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="4">
-                        <v-subheader class="pl-0">Handle Separation</v-subheader>
-                      </v-col>
-                      <v-col cols="8">
-                        <v-slider
-                          v-model="handleSeparation"
-                          thumb-label
-                          min="10"
-                          max="50"
-                          step="1"
-                        ></v-slider>
-                      </v-col>
-                    </v-row>
+                    <v-slider
+                      v-model="height"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="40"
+                      max="200"
+                      label="H1"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementHeight"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementHeight"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
+                    <v-slider
+                      v-model="diameterTop"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="40"
+                      max="160"
+                      label="D1"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementDiameterTop"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementDiameterTop"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
+                    <v-slider
+                      v-model="diameterBottom"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="40"
+                      max="160"
+                      label="D2"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementDiameterBottom"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementDiameterBottom"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
+                    <v-slider
+                      v-model="mugThickness"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="1"
+                      max="10"
+                      step="0.5"
+                      label="T1"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementMugThickness"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementMugThickness"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
+                    <v-slider
+                      v-model="handleThickness"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="1"
+                      max="30"
+                      step="1"
+                      label="T2"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementHandleThickness"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementHandleThickness"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
+                    <v-slider
+                      v-model="handleSeparation"
+                      thumb-size="24"
+                      thumb-label="always"
+                      min="10"
+                      max="50"
+                      step="1"
+                      label="S1"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon
+                          @click="decrementHandleSeparation"
+                        >
+                          mdi-minus
+                        </v-icon>
+                      </template>
+
+                      <template v-slot:append>
+                        <v-icon
+                          @click="incrementHandleSeparation"
+                        >
+                          mdi-plus
+                        </v-icon>
+                      </template>
+                    </v-slider>
                   </v-col>
                 </v-row>
               </v-container>
@@ -633,6 +690,42 @@ import { db } from '@/main'
       }
     },
     methods: {
+      decrementHeight () {
+        this.height--
+      },
+      incrementHeight () {
+        this.height++
+      },
+      decrementDiameterTop () {
+        this.diameterTop--
+      },
+      incrementDiameterTop () {
+        this.diameterTop++
+      },
+      decrementDiameterBottom () {
+        this.diameterBottom--
+      },
+      incrementDiameterBottom () {
+        this.diameterBottom++
+      },
+      decrementMugThickness () {
+        this.mugThickness--
+      },
+      incrementMugThickness () {
+        this.mugThickness++
+      },
+      decrementHandleThickness () {
+        this.handleThickness--
+      },
+      incrementHandleThickness () {
+        this.handleThickness++
+      },
+      decrementHandleSeparation () {
+        this.handleSeparation--
+      },
+      incrementHandleSeparation () {
+        this.handleSeparation++
+      },
       submitDesign: function() {
         var design = {
           role: this.role,
