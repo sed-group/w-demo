@@ -341,6 +341,15 @@
                 />
                 Sorry, your browser does not support inline SVG.  
               </svg>
+            </v-card-text>
+          </v-card>
+
+          <v-card
+            max-width="344"
+            class="mx-auto my-3"
+            v-if="activeBtn==4"
+          >
+            <v-card-text>
               <v-container fluid>
                 <v-row>
                   <v-col cols="12">
