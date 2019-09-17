@@ -614,7 +614,7 @@ import { db } from '@/main'
         return d
       },
       mugVolume() {
-        return (Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-this.mugThickness)+(this.diameterBottom-this.mugThickness))/4)**2/1000).toFixed(2)
+        return (Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2/1000).toFixed(2)
       },
       mugWeight() {
         var v1 = (Math.PI * this.height * ((this.diameterTop+this.diameterBottom)/4)**2/1000).toFixed(2)
