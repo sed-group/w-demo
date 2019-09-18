@@ -709,8 +709,21 @@ import { db } from '@/main'
           x = (this.cx + this.diameterBottom/2).toString()
         }
         var i = ((this.height - 40)/2).toString()
-        var h = (100 + this.height - 40).toString()
-        var d ="m " + x + ",100 q " + this.handleSeparation + " 0 " + this.handleSeparation + " " + i + " T " + x + "," + h;
+        var endY = (100 + this.height - 40).toString()
+        var d = ""
+        if (this.selectedHandle == 'Rounded') {
+          d = "m " + x + ",100 q " + this.handleSeparation + " 0 " + this.handleSeparation + " " + i + " T " + x + "," + endY;
+        } else if (this.selectedHandle == 'Rectangular') {
+          d = "m " + x + ",100 h " + this.handleSeparation + " V " + endY + " h -" + this.handleSeparation;
+        } else if (this.selectedHandle == 'Open') {
+          var endX = (parseInt(x) + this.handleSeparation).toString()
+          if (this.height >= 80) {
+            var midY = 40
+          } else {
+            var midY = (this.height - 40) / 4
+          }
+          d = "m " + x + ",100 q " + this.handleSeparation + " 0 " + this.handleSeparation + " " + midY + " T " + endX + "," + endY;
+        }
         return d
       },
       mugVolume() {
