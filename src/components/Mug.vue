@@ -341,9 +341,29 @@
                 />
                 Sorry, your browser does not support inline SVG.  
               </svg>
-              <v-container fluid>
+              <v-container fluid class="py-0">
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" class="py-0">
+                    <v-row>
+                      <v-col cols="6" class="pt-0">
+                        <v-select
+                          v-model="selectedMaterial"
+                          :items="mugMaterials"
+                          label="Material"
+                          :menu-props="{ top: true, offsetY: true }"
+                        >
+                        </v-select>
+                      </v-col>
+                      <v-col cols="6" class="pt-0">
+                        <v-select
+                          v-model="selectedHandle"
+                          :items="handleTypes"
+                          label="Handle"
+                          :menu-props="{ top: true, offsetY: true }"
+                        >
+                        </v-select>
+                      </v-col>
+                    </v-row>
                     <v-slider
                       v-model="height"
                       thumb-size="24"
@@ -491,13 +511,6 @@
                         </v-icon>
                       </template>
                     </v-slider>
-                    <v-select
-                      v-model="selectedMaterial"
-                      :items="mugMaterials"
-                      label="Material"
-                      :menu-props="{ top: true, offsetY: true }"
-                    >
-                    </v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -625,6 +638,8 @@ import { db } from '@/main'
             strenght: 40, // MPa
           },
         ],
+        selectedHandle: 'Rounded',
+        handleTypes: ['Rounded', 'Rectangular', 'Open'],
         cardWidth: 312,
         height: 120,
         diameterTop: 100,
