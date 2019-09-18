@@ -450,7 +450,7 @@ import { db } from '@/main'
         }
         this.overlay = !this.overlay
         this.uploading = true
-        db.collection('designs').add(design).then((response) => {
+        db.collection('bikes').add(design).then((response) => {
           if (response) {
             //console.log(response)
             this.uploading = false

@@ -110,7 +110,7 @@ import { db } from '@/main'
         // data & firebase hook-up
         var data = [];
 
-        db.collection('designs').onSnapshot(res=> {
+        db.collection('bikes').onSnapshot(res=> {
 
           res.docChanges().forEach(change => {
 
