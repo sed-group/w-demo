@@ -304,7 +304,7 @@
                   :cy="80+this.height" 
                   :rx="diameterBottom/2" 
                   :ry="diameterBottom/4" 
-                  style="fill:#BCAAA4;stroke:none;" 
+                  :style="lightStyle" 
                 />
                 <path
                   v-if="this.diameterTop>this.diameterBottom"
@@ -314,7 +314,7 @@
                 />
                 <path 
                   id="mugBody" 
-                  style="opacity:1;fill:#BCAAA4;fill-opacity:1;stroke:none;"
+                  :style="lightStyle" 
                   :d="mugBody"
                 />
                 <path
@@ -329,7 +329,7 @@
                   cy="80" 
                   :rx="diameterTop/2" 
                   :ry="diameterTop/4" 
-                  style="fill:#8D6E63;stroke:none;" 
+                  :style="mediumStyle" 
                 />
                 <ellipse 
                   id="mugTopHole" 
@@ -337,7 +337,7 @@
                   cy="80" 
                   :rx="diameterTop/2-mugThickness" 
                   :ry="diameterTop/4-mugThickness/2" 
-                  style="fill:#3E2723;stroke:none;" 
+                  :style="darkStyle" 
                 />
                 Sorry, your browser does not support inline SVG.  
               </svg>
@@ -447,7 +447,7 @@
                       thumb-label="always"
                       min="1"
                       max="30"
-                      step="1"
+                      step="0.5"
                       label="T2"
                     >
                       <template v-slot:prepend>
@@ -491,28 +491,13 @@
                         </v-icon>
                       </template>
                     </v-slider>
-                    <v-combobox
-                      v-model="select"
+                    <v-select
+                      v-model="selectedMaterial"
                       :items="mugMaterials"
-                      chips
                       label="Material"
+                      :menu-props="{ top: true, offsetY: true }"
                     >
-                      <template v-slot:selection="data">
-                        <v-chip
-                          :key="JSON.stringify(data.item)"
-                          v-bind="data.attrs"
-                          :input-value="data.selected"
-                          :disabled="data.disabled"
-                          @click.stop="data.parent.selectedIndex = data.index"
-                          @click:close="data.parent.selectItem(data.item)"
-                        >
-                          <v-avatar class="accent white--text" left>
-                            {{ data.item.slice(0, 1).toUpperCase() }}
-                          </v-avatar>
-                          {{ data.item }}
-                        </v-chip>
-                      </template>
-                    </v-combobox>
+                    </v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -587,7 +572,111 @@ import { db } from '@/main'
       draggable,
       //OtherChart,
     },
+    data () {
+      return {
+        selectedMaterial: 'C',
+        mugMaterials: [
+          {
+            text:'Ceramic',
+            value: 'C',
+            density: 0.004, // g/mm3
+            colorLight: '#BCAAA4',
+            colorMedium: '#8D6E63',
+            colorDark: '#3E2723',
+            thermalExpansion: 10, // *10^-6/K
+            thermalConductivity: 32, // W/m*K
+            toughness: 0.01, // kJ/m^2
+            strenght: 100, // MPa
+          },
+          {
+            text:'Steel',
+            value: 'S',
+            density: 0.008, // g/mm3
+            colorLight: '#B0BEC5',
+            colorMedium: '#546E7A',
+            colorDark: '#263238',
+            thermalExpansion: 18, // *10^-6/K
+            thermalConductivity: 41, // W/m*K
+            toughness: 3, // kJ/m^2
+            strenght: 3000, // MPa
+          },
+          {
+            text:'Aluminium',
+            value: 'Al',
+            density: 0.0027, // g/mm3
+            colorLight: '#E0E0E0',
+            colorMedium: '#BDBDBD',
+            colorDark: '#616161',
+            thermalExpansion: 18, // *10^-6/K
+            thermalConductivity: 41, // W/m*K
+            toughness: 10, // kJ/m^2
+            strenght: 300, // MPa
+          },
+          {
+            text:'Polypropylene',
+            value: 'PP',
+            density: 0.00085, // g/mm3
+            colorLight: '#EF9A9A',
+            colorMedium: '#E53935',
+            colorDark: '#B71C1C',
+            thermalExpansion: 80, // *10^-6/K
+            thermalConductivity: 0.11, // W/m*K
+            toughness: 0.1, // kJ/m^2
+            strenght: 40, // MPa
+          },
+        ],
+        cardWidth: 312,
+        height: 120,
+        diameterTop: 100,
+        diameterBottom: 100,
+        mugThickness: 5.5,
+        handleThickness: 15.5,
+        handleSeparation: 30,
+        mugDensity: 0.004, // g/mm3
+        uploading: false,
+        overlay: false,
+        activeBtn: 0,
+        role: 0,
+        roles: [
+          { text: 'User', icon: '👩‍🚀', color: 'red' },
+          { text: 'Designer', icon: '👩‍💻', color: 'blue' },
+          { text: 'Production engineer', icon: '👨‍🏭', color: 'green' },
+          { text: 'Maintenance engineer', icon: '👩‍🔧', color: '#FFC107' },
+        ],
+        attribute: null,
+        attributes: [
+          { text: 'Low sale price', icon: '💰', order: '1' },
+          { text: 'High performance', icon: '🏅', order: '2' },
+          { text: 'High reliability', icon: '🐢', order: '3' },
+          { text: 'High maintainability', icon: '🛠️', order: '4' },
+        ],
+        toggle_saddle: 0,
+        toggle_drivetrain: 0,
+        toggle_brakes: 0,
+        toggle_handlebars: 0,
+        toggle_wheels: 0,
+        toggle_frame: 0,
+        error: null,
+      }
+    },
     computed: {
+      lightStyle() { 
+        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
+        return "fill:" + material['colorLight'] + ";stroke:none;" 
+      },
+      mediumStyle() { 
+        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
+        return "fill:" + material['colorMedium'] + ";stroke:none;" 
+      },
+      darkStyle() { 
+        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
+        return "fill:" + material['colorDark'] + ";stroke:none;" 
+      },
+      handleStyle() {
+        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
+        var style = "fill:none;stroke:" + material['colorMedium'] + ";stroke-width:" + this.handleThickness + ";stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        return style
+      },
       cx() { return (this.cardWidth / 2); },
       mugBody() {
         var topLeft = (this.cx - this.diameterTop/2).toString()
@@ -596,10 +685,6 @@ import { db } from '@/main'
         var bottomRight = (this.cx + this.diameterBottom/2).toString()
         var d = "M " + topLeft + ",80 H " + topRight + " L " + bottomRight + "," + (80+this.height).toString() + " H " + bottomLeft + " Z"
         return d;
-      },
-      handleStyle() {
-        var style = "fill:none;stroke:#8D6E63;stroke-width:" + this.handleThickness + ";stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-        return style
       },
       handle() {
         var x
@@ -621,7 +706,8 @@ import { db } from '@/main'
         var v2 = this.mugVolume
         var lHandle = this.handleSeparation + this.height;
         var vHandle = (this.handleThickness/2)**2*Math.PI*lHandle;
-        return ((v1-v2+vHandle)*this.mugDensity).toFixed(2)
+        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
+        return ((v1-v2+vHandle)*material['density']).toFixed(2)
       },
       weight: function () {
         return Math.floor(50 + (- this.toggle_saddle + this.toggle_drivetrain - this.toggle_brakes + this.toggle_handlebars + this.toggle_wheels - this.toggle_frame) * 50 / 9)
@@ -674,49 +760,6 @@ import { db } from '@/main'
         })[0].order) / 10 * this.valueMaintainability
         return Math.floor((100 - priceValue + performanceValue + reliabilityValue + maintainabilityValue) / 1.5)
       },
-    },
-    data () {
-      return {
-        mugMaterials: [
-          'Ceramic',
-          'Steel',
-          'Aluminum',
-          'Plastic',
-          'Bamboo',
-        ],
-        cardWidth: 312,
-        height: 100,
-        diameterTop: 100,
-        diameterBottom: 100,
-        mugThickness: 5,
-        handleThickness: 15,
-        handleSeparation: 20,
-        mugDensity: 0.004, // g/mm3
-        uploading: false,
-        overlay: false,
-        activeBtn: 0,
-        role: 0,
-        roles: [
-          { text: 'User', icon: '👩‍🚀', color: 'red' },
-          { text: 'Designer', icon: '👩‍💻', color: 'blue' },
-          { text: 'Production engineer', icon: '👨‍🏭', color: 'green' },
-          { text: 'Maintenance engineer', icon: '👩‍🔧', color: '#FFC107' },
-        ],
-        attribute: null,
-        attributes: [
-          { text: 'Low sale price', icon: '💰', order: '1' },
-          { text: 'High performance', icon: '🏅', order: '2' },
-          { text: 'High reliability', icon: '🐢', order: '3' },
-          { text: 'High maintainability', icon: '🛠️', order: '4' },
-        ],
-        toggle_saddle: 0,
-        toggle_drivetrain: 0,
-        toggle_brakes: 0,
-        toggle_handlebars: 0,
-        toggle_wheels: 0,
-        toggle_frame: 0,
-        error: null,
-      }
     },
     methods: {
       decrementHeight () {
