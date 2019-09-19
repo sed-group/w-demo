@@ -25,15 +25,14 @@
         <v-row no-gutters>
           <v-col xs="6" v-if="activeBtn==0">
             <v-card
-              max-width="344"
               class="mx-3 mt-3"
-              
             >
               <v-card-title>Mug</v-card-title>
               <v-card-text class="py-0">
                 <svg 
                   :height="height+130" 
                   width="312"
+                  style="display:block;margin:auto;"
                 >
                   <text :x="cx" y="15" text-anchor="middle" fill="#03A9F4">{{ mugVolume }} ml</text>
                   <text :x="cx" y="30" text-anchor="middle" fill="#FF5722">{{ mugWeight }} g</text>
@@ -86,7 +85,6 @@
           <v-col xs="6" v-if="activeBtn==0">
             <v-card
               class="mx-3 mt-3"
-              
             >
               <v-card-text>
                 <v-container fluid class="py-0">
@@ -268,7 +266,6 @@
           <v-col xs="6" v-if="activeBtn==1">
             <v-card
               class="mx-3 mt-3"
-              
             >
               <v-card-title>Analysis</v-card-title>
               <v-card-text class="py-0 text-center">
@@ -290,7 +287,6 @@
           <v-col xs="6" v-if="activeBtn==1">
             <v-card
               class="mx-3 mt-3"
-              
             >
               <v-card-text>
                 <p class="text-left">Good enough? Submit it!</p>
