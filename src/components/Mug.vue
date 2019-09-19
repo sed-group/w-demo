@@ -441,7 +441,7 @@ import { db } from '@/main'
         var Ax = this.cx - 0.5 * this.diameterTop
         var Ay = 80
         var Bx = this.cx - 0.5 * this.diameterBottom
-        var By = 80 + this.height
+        var By = 80 + this.height * 1.5
         var dx = Ax - Bx
         var dy = Ay - By
         var dist = Math.sqrt(dx*dx+dy*dy)
@@ -506,10 +506,10 @@ import { db } from '@/main'
         return d
       },
       mugVolume() {
-        return (Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2/1000).toFixed(2)
+        return (Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2).toFixed(2)
       },
       mugWeight() {
-        var v1 = (Math.PI * this.height * ((this.diameterTop+this.diameterBottom)/4)**2/1000).toFixed(2)
+        var v1 = (Math.PI * this.height * ((this.diameterTop+this.diameterBottom)/4)**2).toFixed(2)
         var v2 = this.mugVolume
         var lHandle = 2 * this.handleSeparation + this.height;
         if (this.selectedHandle == 'Rounded') {
@@ -520,8 +520,7 @@ import { db } from '@/main'
           lHandle = lHandle * 0.55
         }
         var vHandle = (this.handleThickness/2)**2*Math.PI*lHandle;
-        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
-        return ((v1-v2+vHandle)*material['density']).toFixed(2)
+        return ((v1-v2+vHandle)*this.material['density']).toFixed(2)
       },
     },
     methods: {
