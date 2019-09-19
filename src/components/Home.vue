@@ -42,6 +42,7 @@
                       </v-list-item-icon>
                       <v-list-item-content>
                         <v-list-item-title v-text="demo.text"></v-list-item-title>
+                        <v-list-item-subtitle v-text="demo.description"></v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
@@ -83,17 +84,17 @@
         demos: [
           {
             text: 'Mug',
-            description: '',
+            description: 'Parametric container of liquids',
             icon: 'mdi-coffee',
           },
           {
             text: 'Bike',
-            description: '',
+            description: 'Configurator and value information draft example',
             icon: 'mdi-bike',
           },
           {
             text: 'Results',
-            description: '',
+            description: 'The designs submitted via the Bike demo.',
             icon: 'mdi-chart-bar',
           },
         ],
