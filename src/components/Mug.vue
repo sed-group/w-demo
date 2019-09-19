@@ -34,6 +34,20 @@
                   width="312"
                   style="display:block;margin:auto;"
                 >
+                  <defs>
+                    <linearGradient 
+                      id="body_gradient" 
+                      gradientUnits="userSpaceOnUse" 
+                      :x1="this.gradientPoints[0]" 
+                      :y1="this.gradientPoints[1]" 
+                      :x2="this.gradientPoints[2]" 
+                      :y2="this.gradientPoints[3]" 
+                    >
+                      <stop offset="0%" :style="this.gradientOffsetStyle( this.material['colorLight'] )"/>
+                      <stop offset="50%" :style="this.gradientOffsetStyle( this.material['colorHighlight'] )"/>
+                      <stop offset="100%" :style="this.gradientOffsetStyle( this.material['colorLight'] )"/>
+                    </linearGradient>
+                  </defs>
                   <text :x="cx" y="15" text-anchor="middle" fill="#03A9F4">{{ mugVolume }} ml</text>
                   <text :x="cx" y="30" text-anchor="middle" fill="#FF5722">{{ mugWeight }} g</text>
                   <ellipse 
@@ -115,7 +129,7 @@
                         thumb-size="24"
                         thumb-label="always"
                         min="40"
-                        max="200"
+                        max="160"
                         label="H1"
                       >
                         <template v-slot:prepend>
@@ -212,7 +226,7 @@
                         thumb-size="24"
                         thumb-label="always"
                         min="1"
-                        max="30"
+                        max="20"
                         step="0.5"
                         label="T2"
                       >
@@ -358,6 +372,7 @@ import { db } from '@/main'
             text:'Ceramic',
             value: 'C',
             density: 0.004, // g/mm3
+            colorHighlight: '#EFEBE9',
             colorLight: '#BCAAA4',
             colorMedium: '#8D6E63',
             colorDark: '#3E2723',
@@ -370,6 +385,7 @@ import { db } from '@/main'
             text:'Steel',
             value: 'S',
             density: 0.008, // g/mm3
+            colorHighlight: '#ECEFF1',
             colorLight: '#B0BEC5',
             colorMedium: '#546E7A',
             colorDark: '#263238',
@@ -382,6 +398,7 @@ import { db } from '@/main'
             text:'Aluminium',
             value: 'Al',
             density: 0.0027, // g/mm3
+            colorHighlight: '#F5F5F5',
             colorLight: '#E0E0E0',
             colorMedium: '#BDBDBD',
             colorDark: '#616161',
@@ -394,7 +411,8 @@ import { db } from '@/main'
             text:'Polypropylene',
             value: 'PP',
             density: 0.00085, // g/mm3
-            colorLight: '#EF9A9A',
+            colorHighlight: '#EF9A9A',
+            colorLight: '#EF5350',
             colorMedium: '#E53935',
             colorDark: '#B71C1C',
             thermalExpansion: 80, // *10^-6/K
@@ -405,12 +423,11 @@ import { db } from '@/main'
         ],
         selectedHandle: 'Rounded',
         handleTypes: ['Rounded', 'Rectangular', 'Open'],
-        cardWidth: 312,
-        height: 120,
+        height: 100,
         diameterTop: 100,
         diameterBottom: 100,
         mugThickness: 5.5,
-        handleThickness: 15.5,
+        handleThickness: 10.5,
         handleSeparation: 30,
         mugDensity: 0.004, // g/mm3
         uploading: false,
@@ -420,24 +437,41 @@ import { db } from '@/main'
       }
     },
     computed: {
-      lightStyle() { 
+      gradientPoints() {
+        var Ax = this.cx - 0.5 * this.diameterTop
+        var Ay = 80
+        var Bx = this.cx - 0.5 * this.diameterBottom
+        var By = 80 + this.height
+        var dx = Ax - Bx
+        var dy = Ay - By
+        var dist = Math.sqrt(dx*dx+dy*dy)
+        dx /= dist
+        dy /= dist
+        var x1 =   Ay - dy
+        var y1 = -(Ax - dx)
+        var x2 =   By + dy
+        var y2 = -(Bx + dx)
+        return [x1, y1, x2, y2]
+      },
+      material() {
         var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
-        return "fill:" + material['colorLight'] + ";stroke:none;" 
+        return material
+      },
+      lightStyle() { 
+        //return "fill:" + this.material['colorLight'] + ";stroke:none;" 
+        return "fill: url(#body_gradient);stroke:none;"
       },
       mediumStyle() { 
-        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
-        return "fill:" + material['colorMedium'] + ";stroke:none;" 
+        return "fill:" + this.material['colorMedium'] + ";stroke:none;" 
       },
       darkStyle() { 
-        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
-        return "fill:" + material['colorDark'] + ";stroke:none;" 
+        return "fill:" + this.material['colorDark'] + ";stroke:none;" 
       },
       handleStyle() {
-        var material = this.mugMaterials.filter(obj => { return obj.value === this.selectedMaterial })[0];
-        var style = "fill:none;stroke:" + material['colorMedium'] + ";stroke-width:" + this.handleThickness + ";stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        var style = "fill:none;stroke:" + this.material['colorMedium'] + ";stroke-width:" + this.handleThickness + ";stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;"
         return style
       },
-      cx() { return (this.cardWidth / 2); },
+      cx() { return (312 / 2); },
       mugBody() {
         var topLeft = (this.cx - this.diameterTop/2).toString()
         var topRight = (this.cx + this.diameterTop/2).toString()
@@ -491,6 +525,9 @@ import { db } from '@/main'
       },
     },
     methods: {
+      gradientOffsetStyle( color ) {
+        return "stop-color: " + color + ";"
+      },
       decrementHeight () {
         this.height--
       },
@@ -510,16 +547,16 @@ import { db } from '@/main'
         this.diameterBottom++
       },
       decrementMugThickness () {
-        this.mugThickness--
+        this.mugThickness = this.mugThickness - 0.5
       },
       incrementMugThickness () {
-        this.mugThickness++
+        this.mugThickness = this.mugThickness + 0.5
       },
       decrementHandleThickness () {
-        this.handleThickness--
+        this.handleThickness = this.handleThickness - 0.5
       },
       incrementHandleThickness () {
-        this.handleThickness++
+        this.handleThickness = this.handleThickness + 0.5
       },
       decrementHandleSeparation () {
         this.handleSeparation--
