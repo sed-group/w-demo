@@ -34,7 +34,6 @@
                     <v-list-item
                       v-for="(demo, i) in demos"
                       :key="i"
-                      @click=""
                       :to="demo.text"
                     >
                       <v-list-item-icon>
