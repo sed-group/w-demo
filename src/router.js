@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import Home from './components/Home.vue'
 import Bike from './components/Bike.vue'
 import Mug from './components/Mug.vue'
 import Results from './components/Results.vue'
@@ -20,6 +21,14 @@ const router = new Router({
       }
     },
     {
+      path: '/',
+      name: 'Home',
+      component: Home,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
       path: '/bike',
       name: 'Bike',
       component: Bike,
@@ -28,7 +37,7 @@ const router = new Router({
       }
     },
     {
-      path: '/',
+      path: '/mug',
       name: 'Mug',
       component: Mug,
       meta: {
