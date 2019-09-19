@@ -92,11 +92,11 @@
             description: 'Configurator and value information draft example',
             icon: 'mdi-bike',
           },
-          {
-            text: 'Results',
-            description: 'The designs submitted via the Bike demo.',
-            icon: 'mdi-chart-bar',
-          },
+          // {
+          //   text: 'Results',
+          //   description: 'The designs submitted via the Bike demo.',
+          //   icon: 'mdi-chart-bar',
+          // },
         ],
       }
     },
