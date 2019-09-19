@@ -506,11 +506,11 @@ import { db } from '@/main'
         return d
       },
       mugVolume() {
-        return (Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2).toFixed(2)
+        return ((Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2)/1000).toFixed(2)
       },
       mugWeight() {
         var v1 = (Math.PI * this.height * ((this.diameterTop+this.diameterBottom)/4)**2).toFixed(2)
-        var v2 = this.mugVolume
+        var v2 = this.mugVolume * 1000 // convert from ml to mm3
         var lHandle = 2 * this.handleSeparation + this.height;
         if (this.selectedHandle == 'Rounded') {
           lHandle = lHandle * 0.7
