@@ -284,13 +284,91 @@
             >
               <v-card-title>Analysis</v-card-title>
               <v-card-text>
-                <v-expansion-panels accordion>
+                <v-expansion-panels
+                  accordion
+                  v-model="analysis"
+                >
                   <v-expansion-panel>
                     <v-expansion-panel-header>Temperature</v-expansion-panel-header>
                     <v-expansion-panel-content>
-                      <p>A volume of {{ mugVolume }} ml of coffee brewed at 95 ºC into this mug, will be at <span class="font-weight-bold">{{ Tcoffee(120).toFixed(2) }} ºC</span> after 2 min in a room at 20 ºC.</p>
-                      <p>Time to reach 65 ºC: {{time2coffee (65).toFixed(2)}} s</p>
-                      <p>Time to reach 50 ºC: {{time2coffee (50).toFixed(2)}} s</p>
+                      <v-slider
+                        v-model="Troom"
+                        thumb-size="24"
+                        thumb-label="always"
+                        min="0"
+                        max="40"
+                        step="1"
+                        label="Room temperature"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon
+                            @click="decrementTroom"
+                          >
+                            mdi-minus
+                          </v-icon>
+                        </template>
+
+                        <template v-slot:append>
+                          <v-icon
+                            @click="incrementTroom"
+                          >
+                            mdi-plus
+                          </v-icon>
+                        </template>
+                      </v-slider>
+                      <v-slider
+                        v-model="Tbrewing"
+                        thumb-size="24"
+                        thumb-label="always"
+                        min="90"
+                        max="100"
+                        step="1"
+                        label="Brewing temperature"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon
+                            @click="decrementTbrewing"
+                          >
+                            mdi-minus
+                          </v-icon>
+                        </template>
+
+                        <template v-slot:append>
+                          <v-icon
+                            @click="incrementTbrewing"
+                          >
+                            mdi-plus
+                          </v-icon>
+                        </template>
+                      </v-slider>
+                      <p>Time to reach 65 ºC: <span class="font-weight-bold">{{time2coffee (65).toFixed(2)}} s</span></p>
+                      <p>Time to reach 50 ºC: <span class="font-weight-bold">{{time2coffee (50).toFixed(2)}} s</span></p>
+                      <v-slider
+                        v-model="waitingTime"
+                        thumb-size="24"
+                        thumb-label="always"
+                        min="0"
+                        max="3600"
+                        step="1"
+                        label="Waiting time (s)"
+                      >
+                        <template v-slot:prepend>
+                          <v-icon
+                            @click="decrementWaitingTime"
+                          >
+                            mdi-minus
+                          </v-icon>
+                        </template>
+
+                        <template v-slot:append>
+                          <v-icon
+                            @click="incrementWaitingTime"
+                          >
+                            mdi-plus
+                          </v-icon>
+                        </template>
+                      </v-slider>
+                      <p>Temperature: <span class="font-weight-bold">{{ Tcoffee(waitingTime).toFixed(2) }} ºC</span></p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <v-expansion-panel>
@@ -413,7 +491,10 @@ import { db } from '@/main'
     },
     data () {
       return {
+        analysis: 0,
         Troom: 20,
+        Tbrewing: 95,
+        waitingTime: 120,
         selectedMaterial: 'C',
         mugMaterials: [
           {
@@ -594,7 +675,7 @@ import { db } from '@/main'
         // Thermal energy in the coffee: Q = m * ch * Tcoffee
         var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
         var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
-        var Tcoffee0 = 95; // Temperature of coffee in ºC at t=0
+        var Tcoffee0 = this.Tbrewing; // Temperature of coffee in ºC at t=0
         var Troom = this.Troom; // Temperature of the room in ºC
         var d = this.mugThickness; // Thickness of the insulator in mm
         d = d / 10**3 // From mm to m
@@ -602,7 +683,6 @@ import { db } from '@/main'
         var A = this.mugArea; // Cross-sectional area of the insulator in mm2
         A = A / 10**6 // From mm2 to m2
         var tau = (d * m * ch) / (k * A );
-        console.log(tau)
 
         // Radiation is ignored
         // Convection is ignored
@@ -615,7 +695,7 @@ import { db } from '@/main'
         // Thermal energy in the coffee: Q = m * ch * Tcoffee
         var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
         var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
-        var Tcoffee0 = 95; // Temperature of coffee in ºC at t=0
+        var Tcoffee0 = this.Tbrewing; // Temperature of coffee in ºC at t=0
         var Troom = this.Troom; // Temperature of the room in ºC
         var d = this.mugThickness; // Thickness of the insulator in mm
         d = d / 10**3 // From mm to m
@@ -623,7 +703,6 @@ import { db } from '@/main'
         var A = this.mugArea; // Cross-sectional area of the insulator in mm2
         A = A / 10**6 // From mm2 to m2
         var tau = (d * m * ch) / (k * A );
-        console.log(tau)
 
         // Radiation is ignored
         // Convection is ignored
@@ -669,6 +748,24 @@ import { db } from '@/main'
       },
       incrementHandleSeparation () {
         this.handleSeparation++
+      },
+      decrementTbrewing () {
+        this.Tbrewing--
+      },
+      incrementTbrewing () {
+        this.Tbrewing++
+      },
+      decrementTroom () {
+        this.Troom--
+      },
+      incrementTroom () {
+        this.Troom++
+      },
+      decrementWaitingTime () {
+        this.waitingTime--
+      },
+      incrementWaitingTime () {
+        this.waitingTime++
       },
       submitDesign: function() {
         var mug = {
