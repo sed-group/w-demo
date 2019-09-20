@@ -361,7 +361,7 @@
                         min="0"
                         max="1200"
                         step="1"
-                        label="Waiting time (s)"
+                        label="(s)"
                       >
                         <template v-slot:prepend>
                           <v-icon
@@ -382,7 +382,7 @@
                       <p>Temperature: <span class="font-weight-bold">{{ Tcoffee(waitingTime).toFixed(2) }} ºC</span> after {{Math.floor(waitingTime / 60)}} minutes and {{waitingTime-60*Math.floor(waitingTime / 60)}} seconds.</p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <v-expansion-panel>
+                  <v-expansion-panel class="text-center">
                     <v-expansion-panel-header>Geometry</v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <v-progress-linear
@@ -394,7 +394,7 @@
                       ></v-progress-linear>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <v-expansion-panel>
+                  <v-expansion-panel class="text-center">
                     <v-expansion-panel-header>Ergonomics</v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <v-progress-linear
@@ -406,28 +406,16 @@
                       ></v-progress-linear>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <v-expansion-panel>
+                  <v-expansion-panel class="text-center">
                     <v-expansion-panel-header>Sustainability</v-expansion-panel-header>
                     <v-expansion-panel-content>
-                      <v-progress-linear
-                        color="blue-grey"
-                        height="10"
-                        value="0"
-                        striped
-                        indeterminate
-                      ></v-progress-linear>
+                      <v-btn>Request analysis</v-btn>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <v-expansion-panel>
+                  <v-expansion-panel class="text-center">
                     <v-expansion-panel-header>Resilience</v-expansion-panel-header>
                     <v-expansion-panel-content>
-                      <v-progress-linear
-                        color="blue-grey"
-                        height="10"
-                        value="0"
-                        striped
-                        indeterminate
-                      ></v-progress-linear>
+                      <v-btn>Request analysis</v-btn>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                 </v-expansion-panels>
@@ -502,16 +490,16 @@ import { db } from '@/main'
     },
     data () {
       return {
-        analysis: 0,
+        analysis: undefined,
         Troom: 20,
         Tbrewing: 95,
         temperatureRange: [50,65],
-        waitingTime: 120,
-        selectedMaterial: 'C',
+        waitingTime: 60,
+        selectedMaterial: 'Ceramic',
         mugMaterials: [
           {
             text:'Ceramic',
-            value: 'C',
+            value: 'Ceramic',
             density: 0.004, // g/mm3
             colorHighlight: '#EFEBE9',
             colorLight: '#BCAAA4',
@@ -524,7 +512,7 @@ import { db } from '@/main'
           },
           {
             text:'Steel',
-            value: 'S',
+            value: 'Steel',
             density: 0.008, // g/mm3
             colorHighlight: '#ECEFF1',
             colorLight: '#B0BEC5',
@@ -537,7 +525,7 @@ import { db } from '@/main'
           },
           {
             text:'Aluminium',
-            value: 'Al',
+            value: 'Aluminium',
             density: 0.0027, // g/mm3
             colorHighlight: '#F5F5F5',
             colorLight: '#E0E0E0',
@@ -550,7 +538,7 @@ import { db } from '@/main'
           },
           {
             text:'Polypropylene',
-            value: 'PP',
+            value: 'Polypropylene',
             density: 0.00085, // g/mm3
             colorHighlight: '#EF9A9A',
             colorLight: '#EF5350',
@@ -563,7 +551,7 @@ import { db } from '@/main'
           },
           {
             text:'Glass',
-            value: 'G',
+            value: 'Glass',
             density: 0.008, // g/mm3
             colorHighlight: '#E3F2FD',
             colorLight: '#90CAF9',
