@@ -575,6 +575,7 @@ import { db } from '@/main'
           handleSeparation: this.handleSeparation,
           volume: this.mugVolume,
           weight: this.mugWeight,
+          createdOn: new Date(),
         }
         this.overlay = !this.overlay
         this.uploading = true

@@ -447,6 +447,7 @@ import { db } from '@/main'
           performance: this.valuePerformance,
           reliability: this.valueReliability,
           maintainability: this.valueMaintainability,
+          createdOn: new Date(),
         }
         this.overlay = !this.overlay
         this.uploading = true
