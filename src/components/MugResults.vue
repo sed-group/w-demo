@@ -94,60 +94,60 @@
 
 <script>
 import { db } from '@/main'
-import * as d3 from 'd3'
+//import * as d3 from 'd3'
 
-  export default {
-    components: {
-    },
-    computed: {
-    },
-    data () {
-      return {
-        activeBtn: 0,
-        designs: [],
-      }
-    },
-    methods: {
-      fetchData() {
-        
-        // data & firebase hook-up
-        var data = [];
+export default {
+  components: {
+  },
+  computed: {
+  },
+  data () {
+    return {
+      activeBtn: 0,
+      designs: [],
+    }
+  },
+  methods: {
+    fetchData() {
+      
+      // data & firebase hook-up
+      var data = [];
 
-        db.collection('mugs').onSnapshot(res=> {
+      db.collection('mugs').onSnapshot(res=> {
 
-          res.docChanges().forEach(change => {
+        res.docChanges().forEach(change => {
 
-            const doc = change.doc.data();
+          const doc = change.doc.data();
 
-            switch (change.type) {
-              case 'added':
-                data.push(doc);
-                break;
-              case 'modified': {
-                const index = data.findIndex(item => item.id == doc.id);
-                data[index] = doc;
-                break;
-              }
-              case 'removed':
-                data = data.filter(item => item.id !== doc.id);
-                break;
-              default:
-                break;
+          switch (change.type) {
+            case 'added':
+              data.push(doc);
+              break;
+            case 'modified': {
+              const index = data.findIndex(item => item.id == doc.id);
+              data[index] = doc;
+              break;
             }
-
-          });
-
-          this.designs = data;
-          console.log(data)
+            case 'removed':
+              data = data.filter(item => item.id !== doc.id);
+              break;
+            default:
+              break;
+          }
 
         });
-      },
-      createSvg() {
-      },
+
+        this.designs = data;
+        console.log(data)
+
+      });
     },
-    mounted(){
-      this.fetchData();
-      this.createSvg();
+    createSvg() {
     },
-  }
+  },
+  mounted(){
+    this.fetchData();
+    this.createSvg();
+  },
+}
 </script>
