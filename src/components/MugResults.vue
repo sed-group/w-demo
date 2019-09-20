@@ -28,7 +28,7 @@
             <v-card-title>Plot</v-card-title>
             <v-card-text>
               <!-- This is where the d3 svg is loaded -->
-              <div class="canvas"></div>
+              <div class="d3-canvas"></div>
             </v-card-text>
           </v-card>
 
@@ -108,7 +108,7 @@ import * as d3 from 'd3'
       }
     },
     methods: {
-      displayData() {
+      fetchData() {
         
         // data & firebase hook-up
         var data = [];
@@ -138,14 +138,16 @@ import * as d3 from 'd3'
           });
 
           this.designs = data;
+          console.log(data)
 
         });
       },
-      createSvg() {},
+      createSvg() {
+      },
     },
     mounted(){
-      this.displayData()
-      this.createSvg()
+      this.fetchData();
+      this.createSvg();
     },
   }
 </script>
