@@ -279,22 +279,66 @@
           </v-col>
           <v-col xs="6" v-if="activeBtn==1">
             <v-card
-              class="mx-3 mt-3"
+              class="mx-3 my-3"
             >
               <v-card-title>Analysis</v-card-title>
-              <v-card-text class="py-0 text-center">
-                <p>Beep boop analysing...</p>
-                <br>
-                <v-progress-circular
-                  :size="70"
-                  :width="7"
-                  color="blue-grey"
-                  indeterminate
-                ></v-progress-circular>
-                <br>
-                <br>
-                <br>
-                <br>
+              <v-card-text class="text-center">
+                <v-expansion-panels accordion>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Temperature</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <p>{{ Tcoffee(120).toFixed(2) }} ºC after 2 min</p>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Geometry</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-progress-linear
+                        color="blue-grey"
+                        height="10"
+                        value="0"
+                        striped
+                        indeterminate
+                      ></v-progress-linear>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Ergonomics</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-progress-linear
+                        color="blue-grey"
+                        height="10"
+                        value="0"
+                        striped
+                        indeterminate
+                      ></v-progress-linear>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Sustainability</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-progress-linear
+                        color="blue-grey"
+                        height="10"
+                        value="0"
+                        striped
+                        indeterminate
+                      ></v-progress-linear>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Resilience</v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-progress-linear
+                        color="blue-grey"
+                        height="10"
+                        value="0"
+                        striped
+                        indeterminate
+                      ></v-progress-linear>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </v-card-text>
             </v-card>
           </v-col>
@@ -366,6 +410,7 @@ import { db } from '@/main'
     },
     data () {
       return {
+        Troom: 20,
         selectedMaterial: 'C',
         mugMaterials: [
           {
@@ -377,8 +422,8 @@ import { db } from '@/main'
             colorMedium: '#8D6E63',
             colorDark: '#3E2723',
             thermalExpansion: 10, // *10^-6/K
-            thermalConductivity: 32, // W/m*K
-            toughness: 0.01, // kJ/m^2
+            thermalConductivity: 3.8, // W/m*K
+            fractureToughness: 1.05, // MPa m^1/2
             strenght: 100, // MPa
           },
           {
@@ -390,9 +435,9 @@ import { db } from '@/main'
             colorMedium: '#546E7A',
             colorDark: '#263238',
             thermalExpansion: 18, // *10^-6/K
-            thermalConductivity: 41, // W/m*K
-            toughness: 3, // kJ/m^2
-            strenght: 3000, // MPa
+            thermalConductivity: 50, // W/m*K
+            fractureToughness: 50, // MPa m^1/2
+            strenght: 1000, // MPa
           },
           {
             text:'Aluminium',
@@ -403,8 +448,8 @@ import { db } from '@/main'
             colorMedium: '#BDBDBD',
             colorDark: '#616161',
             thermalExpansion: 18, // *10^-6/K
-            thermalConductivity: 41, // W/m*K
-            toughness: 10, // kJ/m^2
+            thermalConductivity: 205, // W/m*K
+            fractureToughness: 21, // MPa m^1/2
             strenght: 300, // MPa
           },
           {
@@ -417,8 +462,21 @@ import { db } from '@/main'
             colorDark: '#B71C1C',
             thermalExpansion: 80, // *10^-6/K
             thermalConductivity: 0.11, // W/m*K
-            toughness: 0.1, // kJ/m^2
-            strenght: 40, // MPa
+            fractureToughness: 3.3, // MPa m^1/2
+            strenght: 60, // MPa
+          },
+          {
+            text:'Glass',
+            value: 'G',
+            density: 0.008, // g/mm3
+            colorHighlight: '#E3F2FD',
+            colorLight: '#90CAF9',
+            colorMedium: '#42A5F5',
+            colorDark: '#90CAF9',
+            thermalExpansion: 7.6, // *10^-6/K
+            thermalConductivity: 1.1, // W/m*K
+            fractureToughness: 0.75, // MPa m^1/2
+            strenght: 1500, // MPa
           },
         ],
         selectedHandle: 'Rounded',
@@ -508,6 +566,10 @@ import { db } from '@/main'
       mugVolume() {
         return ((Math.PI * (this.height - this.mugThickness) * (((this.diameterTop-2*this.mugThickness)+(this.diameterBottom-2*this.mugThickness))/4)**2)/1000).toFixed(2)
       },
+      mugArea() {
+        var TotalArea = Math.PI * (this.height * (this.diameterTop + this.diameterBottom)/2 + (this.diameterTop/2)**2 + (this.diameterBottom/2)**2)
+        return TotalArea
+      },
       mugWeight() {
         var v1 = (Math.PI * this.height * ((this.diameterTop+this.diameterBottom)/4)**2).toFixed(2)
         var v2 = this.mugVolume * 1000 // convert from ml to mm3
@@ -524,6 +586,27 @@ import { db } from '@/main'
       },
     },
     methods: {
+      Tcoffee (t) {
+        // Source http://web.mit.edu/21w.732-esg/www/handouts/729_simplified_model_of_heat_loss_in_a_coffee_cup.pdf
+        // Thermal energy in the coffee: Q = m * ch * Tcoffee
+        var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
+        var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
+        var Tcoffee0 = 95; // Temperature of coffee in ºC at t=0
+        var Troom = this.Troom; // Temperature of the room in ºC
+        var d = this.mugThickness; // Thickness of the insulator in mm
+        d = d / 10**3 // From mm to m
+        var k = this.material['thermalConductivity']; // Conductivity of the insulator in W/(m ºC)
+        var A = this.mugArea; // Cross-sectional area of the insulator in mm2
+        A = A / 10**6 // From mm2 to m2
+        var tau = (d * m * ch) / (k * A );
+        console.log(tau)
+
+        // Radiation is ignored
+        // Convection is ignored
+        // Conduction is not ignored:
+        var Tcoffee = Troom + (Tcoffee0 - Troom) * (Math.E ** (-t/tau))
+        return Tcoffee
+      },
       gradientOffsetStyle( color ) {
         return "stop-color: " + color + ";"
       },
