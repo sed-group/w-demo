@@ -283,12 +283,14 @@
               min-width="296"
             >
               <v-card-title>Analysis</v-card-title>
-              <v-card-text class="text-center">
+              <v-card-text>
                 <v-expansion-panels accordion>
                   <v-expansion-panel>
                     <v-expansion-panel-header>Temperature</v-expansion-panel-header>
                     <v-expansion-panel-content>
-                      <p>{{ Tcoffee(120).toFixed(2) }} ºC after 2 min</p>
+                      <p>A volume of {{ mugVolume }} ml of coffee brewed at 95 ºC into this mug, will be at <span class="font-weight-bold">{{ Tcoffee(120).toFixed(2) }} ºC</span> after 2 min in a room at 20 ºC.</p>
+                      <p>Time to reach 65 ºC: {{time2coffee (65).toFixed(2)}} s</p>
+                      <p>Time to reach 50 ºC: {{time2coffee (50).toFixed(2)}} s</p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <v-expansion-panel>
@@ -607,6 +609,27 @@ import { db } from '@/main'
         // Conduction is not ignored:
         var Tcoffee = Troom + (Tcoffee0 - Troom) * (Math.E ** (-t/tau))
         return Tcoffee
+      },
+      time2coffee (T) {
+        // Source http://web.mit.edu/21w.732-esg/www/handouts/729_simplified_model_of_heat_loss_in_a_coffee_cup.pdf
+        // Thermal energy in the coffee: Q = m * ch * Tcoffee
+        var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
+        var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
+        var Tcoffee0 = 95; // Temperature of coffee in ºC at t=0
+        var Troom = this.Troom; // Temperature of the room in ºC
+        var d = this.mugThickness; // Thickness of the insulator in mm
+        d = d / 10**3 // From mm to m
+        var k = this.material['thermalConductivity']; // Conductivity of the insulator in W/(m ºC)
+        var A = this.mugArea; // Cross-sectional area of the insulator in mm2
+        A = A / 10**6 // From mm2 to m2
+        var tau = (d * m * ch) / (k * A );
+        console.log(tau)
+
+        // Radiation is ignored
+        // Convection is ignored
+        // Conduction is not ignored:
+        var Time = - tau * Math.log((T - Troom)/(Tcoffee0 - Troom))
+        return Time
       },
       gradientOffsetStyle( color ) {
         return "stop-color: " + color + ";"
