@@ -280,6 +280,7 @@
           <v-col xs="6" v-if="activeBtn==1">
             <v-card
               class="mx-3 my-3"
+              min-width="296"
             >
               <v-card-title>Analysis</v-card-title>
               <v-card-text class="text-center">
