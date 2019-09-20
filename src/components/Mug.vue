@@ -289,8 +289,9 @@
                   v-model="analysis"
                 >
                   <v-expansion-panel>
-                    <v-expansion-panel-header>Temperature</v-expansion-panel-header>
+                    <v-expansion-panel-header>Thermal</v-expansion-panel-header>
                     <v-expansion-panel-content>
+                      <p class="subtitle-2">Environment</p>
                       <v-slider
                         v-model="Troom"
                         thumb-size="24"
@@ -341,14 +342,24 @@
                           </v-icon>
                         </template>
                       </v-slider>
-                      <p>Time to reach 65 ºC: <span class="font-weight-bold">{{time2coffee (65).toFixed(2)}} s</span></p>
-                      <p>Time to reach 50 ºC: <span class="font-weight-bold">{{time2coffee (50).toFixed(2)}} s</span></p>
+                      <p class="subtitle-2">Desired temperature range</p>
+                      <v-range-slider
+                        v-model="temperatureRange"
+                        thumb-size="24"
+                        thumb-label
+                        :min="Troom"
+                        :max="Tbrewing"
+                        step="1"
+                      ></v-range-slider>
+                      <p>Time to reach {{temperatureRange[0]}} ºC: <span class="font-weight-bold">{{time2coffee (temperatureRange[0]).toFixed(2)}} s</span></p>
+                      <p>Time to reach {{temperatureRange[1]}} ºC: <span class="font-weight-bold">{{time2coffee (temperatureRange[1]).toFixed(2)}} s</span></p>
+                      <p class="subtitle-2">Desired waiting time</p>
                       <v-slider
                         v-model="waitingTime"
                         thumb-size="24"
-                        thumb-label="always"
+                        thumb-label
                         min="0"
-                        max="3600"
+                        max="1200"
                         step="1"
                         label="Waiting time (s)"
                       >
@@ -368,7 +379,7 @@
                           </v-icon>
                         </template>
                       </v-slider>
-                      <p>Temperature: <span class="font-weight-bold">{{ Tcoffee(waitingTime).toFixed(2) }} ºC</span></p>
+                      <p>Temperature: <span class="font-weight-bold">{{ Tcoffee(waitingTime).toFixed(2) }} ºC</span> after {{Math.floor(waitingTime / 60)}} minutes and {{waitingTime-60*Math.floor(waitingTime / 60)}} seconds.</p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <v-expansion-panel>
@@ -494,6 +505,7 @@ import { db } from '@/main'
         analysis: 0,
         Troom: 20,
         Tbrewing: 95,
+        temperatureRange: [50,65],
         waitingTime: 120,
         selectedMaterial: 'C',
         mugMaterials: [
@@ -673,7 +685,7 @@ import { db } from '@/main'
       Tcoffee (t) {
         // Source http://web.mit.edu/21w.732-esg/www/handouts/729_simplified_model_of_heat_loss_in_a_coffee_cup.pdf
         // Thermal energy in the coffee: Q = m * ch * Tcoffee
-        var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
+        var m = this.mugVolume; // Mass of coffee in g (volume in ml * 1000mm3/ml * 0.001g/mm3)
         var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
         var Tcoffee0 = this.Tbrewing; // Temperature of coffee in ºC at t=0
         var Troom = this.Troom; // Temperature of the room in ºC
@@ -693,7 +705,7 @@ import { db } from '@/main'
       time2coffee (T) {
         // Source http://web.mit.edu/21w.732-esg/www/handouts/729_simplified_model_of_heat_loss_in_a_coffee_cup.pdf
         // Thermal energy in the coffee: Q = m * ch * Tcoffee
-        var m = this.mugVolume; // Mass of coffee in g (volume in ml / 1000 * 1000)
+        var m = this.mugVolume; // Mass of coffee in g (volume in ml * 1000mm3/ml * 0.001g/mm3)
         var ch = 4.184; // Heat capacity of coffee in J/(g ºC)
         var Tcoffee0 = this.Tbrewing; // Temperature of coffee in ºC at t=0
         var Troom = this.Troom; // Temperature of the room in ºC
