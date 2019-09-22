@@ -5,6 +5,11 @@ import router from './router'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/scatter'
+import 'echarts/lib/chart/parallel'
+Vue.component('chart', ECharts)
+
 Vue.config.productionTip = false
 
 var firebaseConfig = {
