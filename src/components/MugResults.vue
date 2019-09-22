@@ -25,10 +25,22 @@
             class="mx-auto my-3"
             v-if="activeBtn==0"
           >
+            <v-card-title>echarts</v-card-title>
+            <v-card-text>
+              <v-chart :options="scatter"/>
+            </v-card-text>
+          </v-card>
+
+          <v-card
+            max-width="1280"
+            class="mx-auto my-3"
+            v-if="activeBtn==0"
+          >
             <v-card-title>Plot</v-card-title>
             <v-card-text>
               <!-- This is where the d3 svg is loaded -->
               <div class="d3-canvas"></div>
+              <apexchart type=scatter height=350 :options="chartOptions" :series="series" />
             </v-card-text>
           </v-card>
 
@@ -56,7 +68,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in designs" :key="item.volume">
+                  <tr v-for="item in designs" :key="item.uuid">
                     <!-- <td>{{ item.height }}</td>
                     <td>{{ item.diameterTop }}</td>
                     <td>{{ item.diameterBottom }}</td>
@@ -95,16 +107,103 @@
 <script>
 import { db } from '@/main'
 //import * as d3 from 'd3'
+import VueApexCharts from 'vue-apexcharts'
+
+import ECharts from 'vue-echarts' // refers to components/ECharts.vue in webpack
+// import ECharts modules manually to reduce bundle size
+import 'echarts/lib/chart/scatter'
 
 export default {
   components: {
+    apexchart: VueApexCharts,
+    'v-chart': ECharts,
   },
   computed: {
+    series() {
+      var series = []
+      for (let i = 0; i < this.materials.length; i++) {
+        const material = this.materials[i];
+        series.push({name: material, data: []})
+        for (let j = 0; j < this.designs.length; j++) {
+          const element = this.designs[j];
+          if (element.material == material) {
+            series[i]['data'].push([parseFloat(element['volume']),parseFloat(element['weight'])])
+          }
+        }
+      }
+      return series
+    },
+    materials() {
+      const materials = [...new Set(this.designs.map(item => item.material))];
+      return materials
+    },
   },
   data () {
     return {
+      scatter: {
+          xAxis: {},
+          yAxis: {},
+          series: [{
+              symbolSize: 10,
+              data: [
+                  [10.0, 8.04],
+                  [8.0, 6.95],
+                  [13.0, 7.58],
+                  [9.0, 8.81],
+                  [11.0, 8.33],
+                  [14.0, 9.96],
+                  [6.0, 7.24],
+                  [4.0, 4.26],
+                  [12.0, 10.84],
+                  [7.0, 4.82],
+                  [5.0, 5.68]
+              ],
+              type: 'scatter'
+          }]
+      },
       activeBtn: 0,
       designs: [],
+      chartOptions: {
+        chart: {
+          zoom: {
+            enabled: false,
+            type: 'xy'
+          }
+        },
+        xaxis: {
+          tickAmount: 10,
+          labels: {
+            formatter: function(val) {
+              return parseFloat(val).toFixed(1)
+            }
+          },
+          title: {
+            text: 'Volume (ml)',
+            offsetX: 0,
+            offsetY: 0,
+            style: {
+              color: undefined,
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              cssClass: 'apexcharts-xaxis-title',
+            },
+          },
+        },
+        yaxis: {
+          tickAmount: 7,
+            title: {
+              text: 'Weight (g)',
+              offsetX: 0,
+              offsetY: 0,
+              style: {
+                color: undefined,
+                fontSize: '12px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                cssClass: 'apexcharts-xaxis-title',
+              },
+            },
+        }
+      },
     }
   },
   methods: {
@@ -138,7 +237,6 @@ export default {
         });
 
         this.designs = data;
-        console.log(data)
 
       });
     },
