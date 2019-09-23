@@ -48,6 +48,30 @@
                 </v-list>
               </v-card-text>
             </v-card>
+            <v-card
+              class="mx-3 my-3"
+            >
+              <v-card-title>Areas</v-card-title>
+              <v-card-text>
+                <v-list>
+                  <v-list-item-group v-model="areas">
+                    <v-list-item
+                      v-for="(area, i) in areas"
+                      :key="i"
+                      :to="area.url"
+                    >
+                      <v-list-item-icon>
+                        <v-icon v-text="area.icon"></v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="area.text"></v-list-item-title>
+                        <v-list-item-subtitle v-text="area.description"></v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -96,6 +120,32 @@
           //   description: 'The designs submitted via the Bike demo.',
           //   icon: 'mdi-chart-bar',
           // },
+        ],
+        areas: [
+          {
+            text: 'Value management',
+            description: 'How to maximize the benefit of all stakeholders?',
+            icon: 'mdi-cash-usd-outline',
+            url: '/',
+          },
+          {
+            text: 'Function modelling',
+            description: 'How to represent the functions of a system?',
+            icon: 'mdi-sitemap',
+            url: '/',
+          },
+          {
+            text: 'CAD/CAE',
+            description: 'How to virtually build a testable system?',
+            icon: 'mdi-file-cad-box',
+            url: '/',
+          },
+          {
+            text: 'Additive manufacturing',
+            description: 'How build physical parts?',
+            icon: 'mdi-printer-3d-nozzle',
+            url: '/',
+          },
         ],
       }
     },
