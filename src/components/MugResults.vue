@@ -449,9 +449,11 @@ export default {
       });
     },
   },
+  created(){
+    this.generateGrids();
+  },
   mounted(){
     this.fetchData();
-    this.generateGrids();
   },
 }
 </script>
