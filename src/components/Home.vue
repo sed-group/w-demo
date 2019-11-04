@@ -115,6 +115,11 @@
             description: 'Configurator and value information draft example',
             icon: 'mdi-bike',
           },
+          {
+            text: 'Kayak',
+            description: 'Configurator and carbon footprint example',
+            icon: 'mdi-rowing',
+          },
           // {
           //   text: 'Results',
           //   description: 'The designs submitted via the Bike demo.',
