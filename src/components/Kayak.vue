@@ -419,6 +419,19 @@ import json from '../assets/database.json'
           return 240
         }
       },
+      time: function() {
+        var time = {
+          preparation: this.preparationTime,
+          setup: this.setupTime,
+          preprocessing: this.preprocessingTime,
+          printing: this.printingTime,
+          postprocessing: this.postprocessingTime,
+          manufacturing: this.manufacturingTime,
+          delivery: this.deliveryTime,
+          total: this.manufacturingTime + this.deliveryTime
+        }
+        return time
+      },
       preprocessingCost: function() {
         var operatorCost = 20 // £/h
         var pcCost = 10 // £/h
@@ -463,6 +476,18 @@ import json from '../assets/database.json'
       totalPrice: function() {
         return 1.12 * (this.preprocessingCost + this.printingCost + this.postprocessingCost) + this.deliveryPrice
       },
+      price: function() {
+        var markup = 1.12
+        var price = {
+          preprocessing: this.preprocessingCost * markup,
+          printing: this.printingCost * markup,
+          postprocessing: this.postprocessingCost * markup,
+          manufacturing: this.manufacturingCost * markup,
+          delivery: this.deliveryPrice,
+          total: this.manufacturingCost * markup + this.deliveryPrice
+        }
+        return price
+      },
       preprocessingEnergy: function() {
         var preparationPower = 200 // W
         var setupPower = 200 // W
@@ -487,6 +512,16 @@ import json from '../assets/database.json'
       },
       manufacturingEnergy: function() {
         return this.preprocessingEnergy + this.printingEnergy + this.postprocessingEnergy
+      },
+      energy: function() {
+        var energy = {
+          preprocessing: this.preprocessingEnergy,
+          printing: this.printingEnergy,
+          postprocessing: this.postprocessingEnergy,
+          manufacturing: this.manufacturingEnergy,
+          total: this.manufacturingEnergy
+        }
+        return energy
       },
       manufacturingCO2: function() {
         return this.manufacturingEnergy * 0.212 //kg
@@ -630,6 +665,9 @@ import json from '../assets/database.json'
           role: this.role,
           variant: this.variant,
           createdOn: new Date(),
+          time: this.time,
+          price: this.price,
+          energy: this.energy
         }
         this.overlay = !this.overlay
         this.uploading = true
