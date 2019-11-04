@@ -524,7 +524,7 @@ import json from '../assets/database.json'
         return energy
       },
       manufacturingCO2: function() {
-        return this.manufacturingEnergy * 0.212 //kg
+        return this.manufacturingEnergy * 0.212 //kgCo2
       },
     },
     data () {
