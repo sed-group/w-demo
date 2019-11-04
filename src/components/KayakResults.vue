@@ -33,13 +33,19 @@
                 <thead>
                   <tr>
                     <th class="text-left">Role</th>
-                    <th class="text-left">CombinedAL</th>
+                    <th class="text-left">Length (mm)</th>
+                    <th class="text-left">Total manufacturing time (h)</th>
+                    <th class="text-left">Total price (£)</th>
+                    <th class="text-left">Manufacturing CO2 (kg)</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="item in designs" :key="item.role">
                     <td>{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
-                    <td>{{ item.variant.CombinedAL }}</td>
+                    <td>{{ (item.variant.Length).toFixed(2) }}</td>
+                    <td>{{ (item.time.manufacturing).toFixed(2) }}</td>
+                    <td>{{ (item.price.total).toFixed(2) }}</td>
+                    <td>{{ (item.energy.manufacturing * 0.212).toFixed(2) }}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
