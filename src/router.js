@@ -7,6 +7,7 @@ import Mug from './components/Mug.vue'
 import Results from './components/Results.vue'
 import MugResults from './components/MugResults.vue'
 import Kayak from './components/Kayak.vue'
+import KayakResults from './components/KayakResults.vue'
 
 Vue.use(Router)
 
@@ -66,6 +67,14 @@ const router = new Router({
       path: '/kayak',
       name: 'Kayak',
       component: Kayak,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/kayakresults',
+      name: 'KayakResults',
+      component: KayakResults,
       meta: {
         requiresAuth: false
       }
