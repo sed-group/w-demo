@@ -628,7 +628,7 @@ import json from '../assets/database.json'
       submitDesign: function() {
         var design = {
           role: this.role,
-          configuration: "something",
+          variant: this.variant,
           createdOn: new Date(),
         }
         this.overlay = !this.overlay
