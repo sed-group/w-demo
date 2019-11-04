@@ -463,6 +463,9 @@ import json from '../assets/database.json'
         var quantity = 1
         return (operatorCost + toolingCost) * (postprocessingTime * quantity)
       },
+      manufacturingCost: function() {
+        return this.preprocessingCost + this.printingCost + this.postprocessingCost
+      },
       deliveryPrice: function() {
         var destination = this.Delivery
         if (destination == 0) {

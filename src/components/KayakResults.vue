@@ -42,10 +42,10 @@
                 <tbody>
                   <tr v-for="item in designs" :key="item.role">
                     <td>{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
-                    <td>{{ (item.variant.Length).toFixed(2) }}</td>
-                    <td>{{ (item.time.manufacturing).toFixed(2) }}</td>
-                    <td>{{ (item.price.total).toFixed(2) }}</td>
-                    <td>{{ (item.energy.manufacturing * 0.212).toFixed(2) }}</td>
+                    <td>{{ (item.variant.Length) }}</td>
+                    <td>{{ (item.time.manufacturing) }}</td>
+                    <td>{{ (item.price.total) }}</td>
+                    <td>{{ (item.energy.manufacturing * 0.212) }}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
