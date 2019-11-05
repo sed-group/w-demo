@@ -195,81 +195,57 @@
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card
-              class="mx-auto my-3"
+              class="mx-auto"
               flat
             >
               <v-card-text>
-                <v-expansion-panels>
-                  <v-expansion-panel>
-                    <v-expansion-panel-header>Manufacturing Time: <b>{{(manufacturingTime).toFixed(2)}} h</b></v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      <v-simple-table dense class="mb-3">
-                        <template v-slot:default>
-                          <thead>
-                            <tr>
-                              <th class="text-left">Phase</th>
-                              <th class="text-left">Time (h)</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="text-left">Pre-Processing</td>
-                              <td class="text-left">{{(preprocessingTime).toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                              <td class="text-left">Printing</td>
-                              <td class="text-left">{{(printingTime).toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                              <td class="text-left">Post-Processing</td>
-                              <td class="text-left">{{(postprocessingTime).toFixed(2)}}</td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                      <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery.</p>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                  <v-expansion-panel>
-                    <v-expansion-panel-header>Price (incl. Delivery): <b>{{(totalPrice).toFixed(2)}} £</b></v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      <v-simple-table dense class="mb-3">
-                        <template v-slot:default>
-                          <thead>
-                            <tr>
-                              <th class="text-left">Phase</th>
-                              <th class="text-left">£</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="text-left">Pre-Processing</td>
-                              <td class="text-left">{{(preprocessingCost*1.12).toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                              <td class="text-left">Printing</td>
-                              <td class="text-left">{{(printingCost*1.12).toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                              <td class="text-left">Post-Processing</td>
-                              <td class="text-left">{{(postprocessingCost*1.12).toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                              <td class="text-left">Delivery</td>
-                              <td class="text-left">{{(deliveryPrice).toFixed(0)}}</td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                  <v-expansion-panel>
-                    <v-expansion-panel-header>Carbon Footprint: <b>{{(manufacturingCO2).toFixed(2)}} kg CO2</b></v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                      <p class="text-left">It would take 10 trees only <b>{{this.getDaysCO2(10).toFixed(2)}}</b> days to consume the CO2 created in the production of your kayak.</p>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
+                <p class="subtitle-1 text-left">Manufacturing Time: <b>{{(manufacturingTime).toFixed(2)}} h</b></p>
+                <v-simple-table dense class="mb-3">
+                  <template v-slot:default>
+                    <tbody>
+                      <tr>
+                        <td class="text-left">Pre-Processing</td>
+                        <td class="text-left">{{(preprocessingTime).toFixed(2)}} h</td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">Printing</td>
+                        <td class="text-left">{{(printingTime).toFixed(2)}} h</td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">Post-Processing</td>
+                        <td class="text-left">{{(postprocessingTime).toFixed(2)}} h</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+                <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery.</p>
+                      
+                <p class="subtitle-1 text-left">Price (incl. Delivery): <b>{{(totalPrice).toFixed(2)}} £</b></p>
+                <v-simple-table dense class="mb-3">
+                  <template v-slot:default>
+                    <tbody>
+                      <tr>
+                        <td class="text-left">Pre-Processing</td>
+                        <td class="text-left">{{(preprocessingCost*1.12).toFixed(2)}} £</td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">Printing</td>
+                        <td class="text-left">{{(printingCost*1.12).toFixed(2)}} £</td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">Post-Processing</td>
+                        <td class="text-left">{{(postprocessingCost*1.12).toFixed(2)}} £</td>
+                      </tr>
+                      <tr>
+                        <td class="text-left">Delivery</td>
+                        <td class="text-left">{{(deliveryPrice).toFixed(0)}} £</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+                      
+                <p class="subtitle-1 text-left">Carbon Footprint: <b>{{(manufacturingCO2).toFixed(2)}} kg CO2</b></p>
+                <p class="text-left">It would take 10 trees only <b>{{this.getDaysCO2(10).toFixed(2)}}</b> days to consume the CO2 created in the production of your kayak.</p>
               </v-card-text>
             </v-card>
           </v-stepper-content>
