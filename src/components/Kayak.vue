@@ -69,21 +69,21 @@
               <v-card-text>
                 <v-select
                   v-model="Location"
-                  :items="LocationItems"
+                  :items="LocationOptions"
                   label="Where are you kayaking?"
                   prepend-icon="mdi-waves"
                   v-if="role==0"
                 ></v-select>
                 <v-select
                   v-model="storage"
-                  :items="storageItems"
+                  :items="storageOptions"
                   label="How are you using the kayak?"
                   prepend-icon="mdi-rowing"
                   v-if="role==0"
                 ></v-select>
                 <v-select
                   v-model="manoeuvrabilityAdvanced"
-                  :items="manoeuvrabilityItems"
+                  :items="manoeuvrabilityOptions"
                   label="Manoeuvrability vs tracking"
                   prepend-icon="mdi-gesture"
                   v-if="role==1"
@@ -108,20 +108,20 @@
                 <!-- <v-divider></v-divider> -->
                 <v-select
                   v-model="LegLength"
-                  :items="LegLengthItems"
+                  :items="LegLengthOptions"
                   label="Leg length"
                 >
                   <v-icon slot="prepend">{{legIcon}}</v-icon>
                 </v-select>
                 <v-select
                   v-model="WaistWidth"
-                  :items="WaistWidthItems"
+                  :items="WaistWidthOptions"
                   label="Waist width"
                   prepend-icon="mdi-arrow-expand-horizontal"
                 ></v-select>
                 <v-select
                   v-model="Delivery"
-                  :items="DeliveryItems"
+                  :items="DeliveryOptions"
                   label="Delivery location"
                   prepend-icon="mdi-truck-delivery"
                 ></v-select>
@@ -284,8 +284,26 @@
               flat
             >
               <v-card-text>
+                <v-form v-model="valid">
+                  <v-text-field
+                    v-model="client"
+                    :rules="nameRules"
+                    label="Your name"
+                    required
+                  ></v-text-field>
+                </v-form>
                 <div class="text-center">
-                  <v-btn @click="submitDesign" :color="roles[role].color" rounded outlined dark large>Order kayak</v-btn>
+                  <v-btn
+                    @click="submitDesign"
+                    :color="roles[role].color"
+                    rounded
+                    outlined
+                    dark
+                    large
+                    :disabled="!valid"
+                  >
+                    Order kayak
+                  </v-btn>
                 </div>
               </v-card-text>
             </v-card>
@@ -305,7 +323,7 @@
           color="blue-grey"
           indeterminate
         ></v-progress-circular>
-        <span v-if="!uploading">Thank you for your order!</span>
+        <span v-if="!uploading">Thank you for your order, {{this.client}}!</span>
         <br>
         <v-btn
           icon
@@ -323,6 +341,9 @@
 import { db } from '@/main'
 //import BarChart from './BarChart.js'
 import json from '../assets/database.json'
+import Filter from 'bad-words'
+
+let filter = new Filter()
 
   export default {
     mixins: [],
@@ -351,7 +372,7 @@ import json from '../assets/database.json'
         return CombinedAL
       },
       legIcon: function () {
-        var icon = this.LegLengthItems.find(x => x.value === this.LegLength).icon
+        var icon = this.LegLengthOptions.find(x => x.value === this.LegLength).icon
         return icon
       },
       variant: function () {
@@ -527,6 +548,11 @@ import json from '../assets/database.json'
     },
     data () {
       return {
+        client: "",
+        nameRules: [
+          v => !!v || 'Name is required',
+        ],
+        valid: true,
         e6: 1,
         preparationTime: 0.75, // h
         setupTime: 0.5, // h
@@ -584,7 +610,7 @@ import json from '../assets/database.json'
           { text: 'Advanced', icon: '🏆', color: 'blue' },
         ],
         Location: 0,
-        LocationItems: [
+        LocationOptions: [
           {
             text: "Flat water",
             value: 0,
@@ -595,7 +621,7 @@ import json from '../assets/database.json'
           },
         ],
         LegLength: 800,
-        LegLengthItems: [
+        LegLengthOptions: [
           {
             text: "70cm - 80cm",
             value: 800,
@@ -613,7 +639,7 @@ import json from '../assets/database.json'
           },
         ],
         WaistWidth: 210,
-        WaistWidthItems: [
+        WaistWidthOptions: [
           {
             text: "60cm - 70cm",
             value: 210,
@@ -628,7 +654,7 @@ import json from '../assets/database.json'
           },
         ],
         Delivery: 0,
-        DeliveryItems: [
+        DeliveryOptions: [
           {
             text: "Sweden",
             value: 0,
@@ -643,7 +669,7 @@ import json from '../assets/database.json'
           },
         ],
         manoeuvrabilityAdvanced: 7,
-        manoeuvrabilityItems: [
+        manoeuvrabilityOptions: [
           {
             text: "1 - Maximum manoeuvrability",
             value: 1,
@@ -691,7 +717,7 @@ import json from '../assets/database.json'
         ],
         Thickness: 4,
         storage: false,
-        storageItems: [
+        storageOptions: [
           {
             text: "Recreational",
             value: false,
@@ -706,7 +732,10 @@ import json from '../assets/database.json'
     },
     methods: {
       submitDesign: function() {
+        this.client = filter.clean(this.client)
         var design = {
+          client: this.client,
+          delivery: this.Delivery,
           role: this.role,
           variant: this.variant,
           createdOn: new Date(),

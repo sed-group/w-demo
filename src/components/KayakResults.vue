@@ -34,7 +34,9 @@
             <v-simple-table>
               <thead>
                 <tr>
+                  <th class="text-left">Client</th>
                   <th class="text-left">Role</th>
+                  <th class="text-left">Delivery</th>
                   <th class="text-left">Length (mm)</th>
                   <th class="text-left">Total manufacturing time (h)</th>
                   <th class="text-left">Total price (£)</th>
@@ -43,7 +45,9 @@
               </thead>
               <tbody>
                 <tr v-for="item in designs" :key="item.role">
+                  <td class="text-left">{{ item.client }}</td>
                   <td class="text-left">{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
+                  <td class="text-left">{{ DeliveryOptions[item.delivery].text }}</td>
                   <td class="text-left">{{ parseFloat(item.variant.Length).toFixed(2) }}</td>
                   <td class="text-left">{{ parseFloat(item.time.manufacturing).toFixed(2) }}</td>
                   <td class="text-left">{{ parseFloat(item.price.total).toFixed(2) }}</td>
@@ -89,6 +93,20 @@ import { db } from '@/main'
         roles: [
           { text: 'Beginner', icon: '🔰', color: 'green' },
           { text: 'Advanced', icon: '🏆', color: 'blue' },
+        ],
+        DeliveryOptions: [
+          {
+            text: "Sweden",
+            value: 0,
+          },
+          {
+            text: "Europe",
+            value: 1,
+          },
+          {
+            text: "Rest of the world",
+            value: 2,
+          },
         ],
       }
     },
