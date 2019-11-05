@@ -6,51 +6,53 @@
     >
       <v-flex xs12>
 
-          <v-app-bar
-            color="blue-grey"
-            dark
-            flat
-            app
-          >
-            <v-toolbar-title class="headline text-uppercase">
-              <span>SE</span>
-              <span class="font-weight-light">DESIGN</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <img src="@/assets/WingquistWhite.png" alt="Wingquist Laboratory" width="110" height="26">
-          </v-app-bar>
+        <v-app-bar
+          color="blue-grey"
+          dark
+          flat
+          app
+        >
+          <v-toolbar-title class="headline text-uppercase">
+            <span>SE</span>
+            <span class="font-weight-light">DESIGN</span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <span class="overline">Kayak Orders</span>
+          <v-spacer></v-spacer>
+          <img src="@/assets/WingquistWhite.png" alt="Wingquist Laboratory" width="110" height="26">
+        </v-app-bar>
 
-          <v-card
-            max-width="1280"
-            class="mx-auto my-3"
-            v-if="activeBtn==0"
-          >
-            <v-card-title>Collected results</v-card-title>
-            <v-card-text>
-              <!-- This is where the d3 svg is loaded -->
-              <div class="canvas"></div>
-              <v-simple-table>
-                <thead>
-                  <tr>
-                    <th class="text-left">Role</th>
-                    <th class="text-left">Length (mm)</th>
-                    <th class="text-left">Total manufacturing time (h)</th>
-                    <th class="text-left">Total price (£)</th>
-                    <th class="text-left">Manufacturing CO2 (kg)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in designs" :key="item.role">
-                    <td>{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
-                    <td>{{ (item.variant.Length) }}</td>
-                    <td>{{ (item.time.manufacturing) }}</td>
-                    <td>{{ (item.price.total) }}</td>
-                    <td>{{ (item.energy.manufacturing * 0.212) }}</td>
-                  </tr>
-                </tbody>
-              </v-simple-table>
-            </v-card-text>
-          </v-card>
+        <v-card
+          max-width="1280"
+          class="mx-auto my-3"
+          v-if="activeBtn==0"
+        >
+          <v-card-title>Collected results</v-card-title>
+          <v-card-text>
+            <!-- This is where the d3 svg is loaded -->
+            <div class="canvas"></div>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th class="text-left">Role</th>
+                  <th class="text-left">Length (mm)</th>
+                  <th class="text-left">Total manufacturing time (h)</th>
+                  <th class="text-left">Total price (£)</th>
+                  <th class="text-left">Manufacturing CO2 (kg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in designs" :key="item.role">
+                  <td class="text-left">{{ roles[item.role].icon }} {{ roles[item.role].text }}</td>
+                  <td class="text-left">{{ parseFloat(item.variant.Length).toFixed(2) }}</td>
+                  <td class="text-left">{{ parseFloat(item.time.manufacturing).toFixed(2) }}</td>
+                  <td class="text-left">{{ parseFloat(item.price.total).toFixed(2) }}</td>
+                  <td class="text-left">{{ parseFloat(item.energy.manufacturing * 0.212).toFixed(2) }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-card-text>
+        </v-card>
 
 
       </v-flex>

@@ -6,301 +6,296 @@
     >
       <v-flex xs12>
 
+        <v-app-bar
+          :color="roles[role].color"
+          dark
+          flat
+          app
+        >
+          <v-toolbar-title class="headline text-uppercase">
+            <span>SE</span>
+            <span class="font-weight-light">DESIGN</span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <span class="overline">Kayak</span>
+          <v-spacer></v-spacer>
+          <img src="@/assets/WingquistWhite.png" alt="Wingquist Laboratory" width="110" height="26">
+        </v-app-bar>
 
-          <v-app-bar
-            :color="roles[role].color"
-            dark
-            flat
-            app
-          >
-            <v-toolbar-title class="headline text-uppercase">
-              <span>SE</span>
-              <span class="font-weight-light">DESIGN</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <span class="overline">Kayak</span>
-            <v-spacer></v-spacer>
-            <img src="@/assets/WingquistWhite.png" alt="Wingquist Laboratory" width="110" height="26">
-          </v-app-bar>
-
-          <v-card
-            max-width="344"
-            class="mx-auto my-3"
-            v-if="activeBtn==0"
-          >
-            <v-card-title>Select your level</v-card-title>
-            <v-card-text>
-              <p class="text-left">Please select your kayaking experience level:</p>
-              <v-list rounded>
-                <v-list-item-group 
-                  v-model="role" 
-                  color="blue-grey"
-                  mandatory
-                >
-                  <v-list-item
-                    v-for="(role, i) in roles"
-                    :key="i"
-                    :color="roles[i].color"
+        <v-stepper v-model="e6" vertical>
+          <v-stepper-step :complete="e6 > 1" step="1" editable :color="roles[role].color">
+            Select your level
+            <small>Please select your kayaking experience level</small>
+          </v-stepper-step>
+          <v-stepper-content step="1">
+            <v-card
+              class="mx-auto my-3"
+              flat
+            >
+              <v-card-text>
+                <v-list rounded>
+                  <v-list-item-group 
+                    v-model="role" 
+                    color="blue-grey"
+                    mandatory
                   >
-                    <v-list-item-content>
-                      <v-list-item-title v-text="role.text"></v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                      <span v-text="role.icon"></span>
-                    </v-list-item-icon>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-card-text>
-          </v-card>
+                    <v-list-item
+                      v-for="(role, i) in roles"
+                      :key="i"
+                      :color="roles[i].color"
+                    >
+                      <v-list-item-content>
+                        <v-list-item-title v-text="role.text"></v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-icon>
+                        <span v-text="role.icon"></span>
+                      </v-list-item-icon>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-stepper-content>
 
-          <v-card
-            max-width="344"
-            class="mx-auto my-3"
-            v-if="activeBtn==1"
-          >
-            <v-card-title>Customisation options</v-card-title>
-            <v-card-text>
-              <p class="text-left">Customise your kayak to fit your needs:</p>
-              <v-select
-                v-model="Location"
-                :items="LocationItems"
-                label="Where are you kayaking?"
-                prepend-icon="mdi-waves"
-                v-if="role==0"
-              ></v-select>
-              <v-select
-                v-model="storage"
-                :items="storageItems"
-                label="How are you using the kayak?"
-                prepend-icon="mdi-rowing"
-                v-if="role==0"
-              ></v-select>
-              <v-slider
-                v-model="manoeuvrabilityAdvanced"
-                prepend-icon="mdi-gesture"
-                append-icon="mdi-ruler"
-                label="Manoeuvrability"
-                max=11
-                min=1
-                ticks
-                v-if="role==1"
-              ></v-slider>
-              <v-slider
-                v-model="Thickness"
-                prepend-icon="mdi-feather"
-                append-icon="mdi-weight-lifter"
-                label="Durability"
-                max=6
-                min=4
-                ticks
-                v-if="role==1"
-              ></v-slider>
-              <v-switch
-                class="mt-0"
-                v-model="storage"
-                label="Back Storage Cabin"
-                color="primary"
-                v-if="role==1"
-              ></v-switch>
-              <!-- <v-divider></v-divider> -->
-              <v-select
-                v-model="LegLength"
-                :items="LegLengthItems"
-                label="Leg length"
-              >
-                <v-icon slot="prepend">{{legIcon}}</v-icon>
-              </v-select>
-              <v-select
-                v-model="WaistWidth"
-                :items="WaistWidthItems"
-                label="Waist width"
-                prepend-icon="mdi-arrow-expand-horizontal"
-              ></v-select>
-              <v-select
-                v-model="Delivery"
-                :items="DeliveryItems"
-                label="Delivery location"
-                prepend-icon="mdi-truck-delivery"
-              ></v-select>
-            </v-card-text>
-          </v-card>
-
-
-          <v-card
-            max-width="344"
-            class="mx-auto my-3"
-            v-if="activeBtn==2"
-          >
-            <v-card-title>Design</v-card-title>
-            <v-card-text class="pt-0">
-              <div class="text-left">Here is your custom kayak:</div>
-              <v-row align="center" justify="center">
-                <v-img
-                  :src="getImgUrl('Final_Array_' + this.variant.number + '_Image.jpg')"
-                  lazy-src="@/assets/Images/blur.jpg"
-                  aspect-ratio="1"
-                  class="grey lighten-2"
-                  max-width="344"
-                  max-height="300"
+          <v-stepper-step :complete="e6 > 2" step="2" editable :color="roles[role].color">
+            Customization options
+            <small>Customise your kayak to fit your needs</small>
+          </v-stepper-step>
+          <v-stepper-content step="2">
+            <v-card
+              class="mx-auto my-3"
+              flat
+            >
+              <v-card-text>
+                <v-select
+                  v-model="Location"
+                  :items="LocationItems"
+                  label="Where are you kayaking?"
+                  prepend-icon="mdi-waves"
+                  v-if="role==0"
+                ></v-select>
+                <v-select
+                  v-model="storage"
+                  :items="storageItems"
+                  label="How are you using the kayak?"
+                  prepend-icon="mdi-rowing"
+                  v-if="role==0"
+                ></v-select>
+                <v-select
+                  v-model="manoeuvrabilityAdvanced"
+                  :items="manoeuvrabilityItems"
+                  label="Manoeuvrability vs tracking"
+                  prepend-icon="mdi-gesture"
+                  v-if="role==1"
+                ></v-select>
+                <v-slider
+                  v-model="Thickness"
+                  prepend-icon="mdi-feather"
+                  append-icon="mdi-weight-lifter"
+                  label="Durability"
+                  max=6
+                  min=4
+                  ticks
+                  v-if="role==1"
+                ></v-slider>
+                <v-switch
+                  class="mt-0"
+                  v-model="storage"
+                  label="Back Storage Cabin"
+                  color="primary"
+                  v-if="role==1"
+                ></v-switch>
+                <!-- <v-divider></v-divider> -->
+                <v-select
+                  v-model="LegLength"
+                  :items="LegLengthItems"
+                  label="Leg length"
                 >
-                <template v-slot:placeholder>
-                  <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                  >
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                  </v-row>
-                </template>
-              </v-img>
-              </v-row>
-              <v-row>
-                <v-col>
-                  Length: <b>{{(length/1000).toFixed(2)}} m</b>
-                </v-col>
-                <v-col>
-                  Weight: <b>{{weight.toFixed(2)}} kg</b>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-progress-linear
-                    color="primary"
-                    height="10"
-                    :value="lengthPercent"
-                    striped
-                  ></v-progress-linear>
-                </v-col>
-                <v-col>
-                  <v-progress-linear
-                    color="primary"
-                    height="10"
-                    :value="weightPercent"
-                    striped
-                  ></v-progress-linear>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+                  <v-icon slot="prepend">{{legIcon}}</v-icon>
+                </v-select>
+                <v-select
+                  v-model="WaistWidth"
+                  :items="WaistWidthItems"
+                  label="Waist width"
+                  prepend-icon="mdi-arrow-expand-horizontal"
+                ></v-select>
+                <v-select
+                  v-model="Delivery"
+                  :items="DeliveryItems"
+                  label="Delivery location"
+                  prepend-icon="mdi-truck-delivery"
+                ></v-select>
+              </v-card-text>
+            </v-card>
+          </v-stepper-content>
 
-          <v-card
-            max-width="344"
-            class="mx-auto my-3"
-            v-if="activeBtn==3"
-          >
-            <v-card-title>Analysis results</v-card-title>
-            <v-card-text>
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header>Manufacturing Time: <b>{{(manufacturingTime).toFixed(2)}} h</b></v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-simple-table dense class="mb-3">
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-left">Phase</th>
-                            <th class="text-left">Time (h)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-left">Pre-Processing</td>
-                            <td class="text-left">{{(preprocessingTime).toFixed(2)}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-left">Printing</td>
-                            <td class="text-left">{{(printingTime).toFixed(2)}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-left">Post-Processing</td>
-                            <td class="text-left">{{(postprocessingTime).toFixed(2)}}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                    <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery.</p>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-                <v-expansion-panel>
-                  <v-expansion-panel-header>Price (incl. Delivery): <b>{{(totalPrice).toFixed(2)}} £</b></v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-simple-table dense class="mb-3">
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-left">Phase</th>
-                            <th class="text-left">£</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-left">Pre-Processing</td>
-                            <td class="text-left">{{(preprocessingCost*1.12).toFixed(2)}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-left">Printing</td>
-                            <td class="text-left">{{(printingCost*1.12).toFixed(2)}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-left">Post-Processing</td>
-                            <td class="text-left">{{(postprocessingCost*1.12).toFixed(2)}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-left">Delivery</td>
-                            <td class="text-left">{{(deliveryPrice).toFixed(0)}}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-                <v-expansion-panel>
-                  <v-expansion-panel-header>Carbon Footprint: <b>{{(manufacturingCO2).toFixed(2)}} kg CO2</b></v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <p class="text-left">It would take 10 trees only <b>{{this.getDaysCO2(10).toFixed(2)}}</b> days to consume the CO2 created in the production of your kayak.</p>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-              <!-- <bar-chart :chart-data="datacollectionPrice" :options="options"></bar-chart> -->
-              <br>
-              <p class="text-left title">Like it? Order it!</p>
-              <div class="text-center">
-                <v-btn @click="submitDesign" rounded :color="roles[role].color" outlined dark large>Order kayak</v-btn>
-              </div>
-            </v-card-text>
-          </v-card>
+          <v-stepper-step :complete="e6 > 3" step="3" editable :color="roles[role].color">
+            Design
+            <small>Overview of your kayak</small>
+          </v-stepper-step>
+          <v-stepper-content step="3">
+            <v-card
+              class="mx-auto my-3"
+              flat
+            >
+              <v-card-text class="pt-0">
+                <v-row align="center" justify="center">
+                  <v-img
+                    :src="getImgUrl('Final_Array_' + this.variant.number + '_Image.jpg')"
+                    lazy-src="@/assets/Images/blur.jpg"
+                    class="grey lighten-2"
+                    width="300"
+                    min-width="100"
+                    contain
+                  >
+                  <template v-slot:placeholder>
+                    <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                    >
+                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    Length: <b>{{(length/1000).toFixed(2)}} m</b>
+                  </v-col>
+                  <v-col>
+                    Weight: <b>{{weight.toFixed(2)}} kg</b>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-progress-linear
+                      :color="roles[role].color"
+                      height="10"
+                      :value="lengthPercent"
+                      striped
+                    ></v-progress-linear>
+                  </v-col>
+                  <v-col>
+                    <v-progress-linear
+                      :color="roles[role].color"
+                      height="10"
+                      :value="weightPercent"
+                      striped
+                    ></v-progress-linear>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 4" step="4" editable :color="roles[role].color">
+            Analysis results
+            <small>Breakdown of time, price and carbon footprint</small>
+          </v-stepper-step>
+          <v-stepper-content step="4">
+            <v-card
+              class="mx-auto my-3"
+              flat
+            >
+              <v-card-text>
+                <v-expansion-panels>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Manufacturing Time: <b>{{(manufacturingTime).toFixed(2)}} h</b></v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-simple-table dense class="mb-3">
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">Phase</th>
+                              <th class="text-left">Time (h)</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-left">Pre-Processing</td>
+                              <td class="text-left">{{(preprocessingTime).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left">Printing</td>
+                              <td class="text-left">{{(printingTime).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left">Post-Processing</td>
+                              <td class="text-left">{{(postprocessingTime).toFixed(2)}}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                      <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery.</p>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Price (incl. Delivery): <b>{{(totalPrice).toFixed(2)}} £</b></v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-simple-table dense class="mb-3">
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">Phase</th>
+                              <th class="text-left">£</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="text-left">Pre-Processing</td>
+                              <td class="text-left">{{(preprocessingCost*1.12).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left">Printing</td>
+                              <td class="text-left">{{(printingCost*1.12).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left">Post-Processing</td>
+                              <td class="text-left">{{(postprocessingCost*1.12).toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left">Delivery</td>
+                              <td class="text-left">{{(deliveryPrice).toFixed(0)}}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>Carbon Footprint: <b>{{(manufacturingCO2).toFixed(2)}} kg CO2</b></v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <p class="text-left">It would take 10 trees only <b>{{this.getDaysCO2(10).toFixed(2)}}</b> days to consume the CO2 created in the production of your kayak.</p>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
+              </v-card-text>
+            </v-card>
+          </v-stepper-content>
+
+          <v-stepper-step step="5" editable :color="roles[role].color">
+            Order
+            <small>Like it? Order it!</small>
+          </v-stepper-step>
+          <v-stepper-content step="5">
+            <v-card
+              class="mx-auto my-3"
+              flat
+            >
+              <v-card-text>
+                <div class="text-center">
+                  <v-btn @click="submitDesign" :color="roles[role].color" rounded outlined dark large>Order kayak</v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-stepper-content>
+
+        </v-stepper>
 
       </v-flex>
     </v-layout>
-    <v-bottom-navigation
-      v-model="activeBtn"
-      :color="roles[role].color"
-      fixed
-      app
-      shift
-    >
-      <v-btn>
-        <span>Level</span>
-        <v-icon>mdi-chevron-triple-up</v-icon>
-      </v-btn>
 
-      <v-btn>
-        <span>Options</span>
-        <v-icon>mdi-format-list-bulleted-type</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <span>Design</span>
-        <v-icon>mdi-camera</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <span>Analysis</span>
-        <v-icon>mdi-chart-bar</v-icon>
-      </v-btn>
-
-    </v-bottom-navigation>
     <div class="text-center">
       <v-overlay :value="overlay">
         <v-progress-circular
@@ -314,7 +309,7 @@
         <br>
         <v-btn
           icon
-          @click="overlay = false"
+          @click="overlay = false; e6 = 1"
           v-if="!uploading"
         >
           <v-icon>mdi-close</v-icon>
@@ -532,6 +527,7 @@ import json from '../assets/database.json'
     },
     data () {
       return {
+        e6: 1,
         preparationTime: 0.75, // h
         setupTime: 0.5, // h
         density: 750, // kg/m^3
@@ -647,6 +643,52 @@ import json from '../assets/database.json'
           },
         ],
         manoeuvrabilityAdvanced: 7,
+        manoeuvrabilityItems: [
+          {
+            text: "1 - Maximum manoeuvrability",
+            value: 1,
+          },
+          {
+            text: "2",
+            value: 2,
+          },
+          {
+            text: "3",
+            value: 3,
+          },
+          {
+            text: "4",
+            value: 4,
+          },
+          {
+            text: "5",
+            value: 5,
+          },
+          {
+            text: "6",
+            value: 6,
+          },
+          {
+            text: "7 - Beginner in flat water",
+            value: 7,
+          },
+          {
+            text: "8",
+            value: 8,
+          },
+          {
+            text: "9 - Beginner in sea water",
+            value: 9,
+          },
+          {
+            text: "10",
+            value: 10,
+          },
+          {
+            text: "11 - Maximum tracking",
+            value: 11,
+          },
+        ],
         Thickness: 4,
         storage: false,
         storageItems: [
