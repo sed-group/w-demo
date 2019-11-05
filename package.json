@@ -56,7 +56,7 @@
     }
   },
   "browserslist": [
-    "> 1%",
+    "> 5%",
     "last 2 versions",
     "ChromeAndroid > 53"
   ]
