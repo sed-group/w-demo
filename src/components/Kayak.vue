@@ -217,7 +217,7 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-                <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery.</p>
+                <p class="text-left font-italic">Please allow up to {{(deliveryTime / 24).toFixed(0)}} additional days for delivery to {{DeliveryOptions[Delivery].text}}.</p>
                       
                 <p class="subtitle-1 text-left">Price (incl. Delivery): <b>{{(totalPrice).toFixed(2)}} £</b></p>
                 <v-simple-table dense class="mb-3">
@@ -244,7 +244,8 @@
                 </v-simple-table>
                       
                 <p class="subtitle-1 text-left">Carbon Footprint: <b>{{(manufacturingCO2).toFixed(2)}} kg CO2</b></p>
-                <p class="text-left">It would take 10 trees only <b>{{this.getDaysCO2(10).toFixed(2)}}</b> days to consume the CO2 created in the production of your kayak.</p>
+                <img v-for="index in parseInt(this.getTreesCO2(30))" :key="index" alt="Tree" src="../assets/tree.svg" width="20">
+                <p class="text-left">It would take only <b>{{this.getTreesCO2(30).toFixed(0)}}</b> trees one month to consume the CO2 created in the production of your kayak.</p>
               </v-card-text>
             </v-card>
           </v-stepper-content>
@@ -745,6 +746,10 @@ let filter = new Filter()
       getDaysCO2(trees) {
         var days = (this.manufacturingCO2 / 2) * 365 / trees
         return days
+      },
+      getTreesCO2(days) {
+        var trees = (this.manufacturingCO2 / 2) * 365 / days
+        return trees
       },
     },
     mounted() {
