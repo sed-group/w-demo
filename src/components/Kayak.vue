@@ -143,7 +143,6 @@
                   <v-img
                     :src="getImgUrl('Final_Array_' + this.variant.number + '_Image.jpg')"
                     lazy-src="@/assets/Images/blur.jpg"
-                    class="grey lighten-2"
                     width="300"
                     min-width="100"
                     contain
