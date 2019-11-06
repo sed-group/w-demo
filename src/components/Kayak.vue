@@ -260,14 +260,6 @@
               flat
             >
               <v-card-text>
-                <v-form v-model="valid">
-                  <v-text-field
-                    v-model="client"
-                    :rules="nameRules"
-                    label="Your name"
-                    required
-                  ></v-text-field>
-                </v-form>
                 <div class="text-center">
                   <v-btn
                     @click="submitDesign"
@@ -281,6 +273,17 @@
                     Order kayak
                   </v-btn>
                 </div>
+                <v-form
+                  v-model="valid"
+                  @submit.prevent
+                >
+                  <v-text-field
+                    v-model="client"
+                    :rules="nameRules"
+                    label="Your name"
+                    required
+                  ></v-text-field>
+                </v-form>
               </v-card-text>
             </v-card>
           </v-stepper-content>
