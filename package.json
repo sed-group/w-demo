@@ -10,7 +10,7 @@
   "dependencies": {
     "apexcharts": "^3.24.0",
     "bad-words": "^3.0.3",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "core-js": "^2.6.11",
     "d3": "^5.14.2",
     "echarts": "^4.5.0",
