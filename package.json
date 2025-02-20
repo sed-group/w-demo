@@ -14,7 +14,7 @@
     "core-js": "^2.6.11",
     "d3": "^7.6.1",
     "echarts": "^5.3.3",
-    "firebase": "^10.14.1",
+    "firebase": "^11.3.1",
     "vue": "^3.0.0",
     "vue-apexcharts": "^1.5.1",
     "vue-chartjs": "^3.5.0",
